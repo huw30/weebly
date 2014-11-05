@@ -27,7 +27,7 @@ All requests must return valid JSON in the following protocol.
   "{elements}": [
     {
       "id":"{elementId}",
-      "property":"{element_property}",
+      "property":"{element property}",
       "...": "..."
     },
     {"...": "..."}
@@ -98,6 +98,32 @@ Response:
 Response: 
 
 `{success: true}`
+
+
+
+#####Pages: 
+ 
+ `GET /pages`   
+ 
+ Response: 
+ 
+ `order by 'order'`
+ 
+ ```JSON
+{
+  "{pages}": [
+    {
+      "id":"{pageId}",
+      "property":"{page property}",
+      "...": "..."
+    },
+    {"...": "..."}
+  ]
+}
+```
+---
+
+
 
 
  
