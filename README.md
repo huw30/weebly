@@ -113,7 +113,7 @@ Response:
 {
   "{pages}": [
     {
-      "id":"{page_id}",
+      "id":"{pageId}",
       "property":"{page property}",
       "...": "..."
     },
