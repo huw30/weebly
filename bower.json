@@ -1,0 +1,20 @@
+{
+  "name": "weebly",
+  "version": "0.0.1",
+  "authors": [
+    "huw30 <huan0924@gmail.com>"
+  ],
+  "description": "This is a mini-weebly project",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1"
+  }
+}
