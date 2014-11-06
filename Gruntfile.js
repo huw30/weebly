@@ -3,67 +3,62 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
+    //copy static files
     copy: {
       main: {
         files: [
-          {expand: true, cwd: 'source/', src: ['fonts/*'], dest: 'build/'},
-          {expand: true, cwd: 'source/', src: ['index.html'], dest: 'build/'}
+          {expand: true, cwd: 'frontend/source/', src: ['fonts/*'], dest: 'frontend/build/'},
+          {expand: true, cwd: 'frontend/source/', src: ['index.html'], dest: 'frontend/build/'}
         ]
       }
     },
-    // sass-compass config
-    compass: {
-      prod: {
-        options: {
-          sassDir: 'source/style',
-          cssDir: 'build/css',
-          environment: 'production'
-        }
-      },
-      dev: {
-        options: {
-          sassDir: 'source/style',
-          cssDir: 'build/css'
+    // sass config
+    sass: {
+      dist: {
+        files: {
+          'frontend/build/css/app.css' : 'frontend/source/style/app.scss'
         }
       }
     },
-
-    // add prefix to property declaration
+    // add prefix to css property declaration
     autoprefixer: {
       single_file: {
         options: {
           // Target-specific options go here.
         },
-        src: 'build/css/*.css'
+        src: 'frontend/build/css/*.css'
       }
     },
 
+    //javascript AMD
     browserify: {
       vendor: {
-        src: 'source/scripts/libs.js',
-        dest: 'build/js/libs.js'
+        src: 'frontend/source/scripts/libs.js',
+        dest: 'frontend/build/js/libs.js'
       },
       app: {
-        src: 'source/scripts/app.js',
-        dest: 'build/js/app.js'
+        src: 'frontend/source/scripts/app.js',
+        dest: 'frontend/build/js/app.js'
       }
 
     },
 
+    //assets management
     sprite:{
       all: {
-        src: 'source/sprites/*.png',
-        destImg: 'build/img/spritesheet.png',
-        destCSS: 'build/css/sprites.css'
+        src: 'frontend/source/sprites/*.png',
+        destImg: 'frontend/build/img/spritesheet.png',
+        destCSS: 'frontend/build/css/sprites.css'
       }
     },
 
+    //html templating
     handlebars: {
       all: {
-          files: {
-            "build/js/templates.js": ["source/templates/**/*.hbs"]
-          }
+        files: {
+          "frontend/build/js/templates.js": ["frontend/source/templates/**/*.hbs"]
         }
+      }
     },
 
     connect: {
@@ -71,7 +66,7 @@ module.exports = function(grunt) {
         options: {
           port: 8000,
           hostname: '*',
-          base: 'build',
+          base: 'frontend/build',
           livereload: true,
           onCreateServer: function(server, connect, options) {
             // var io = require('socket.io').listen(server);
@@ -85,8 +80,8 @@ module.exports = function(grunt) {
 
     watch: {
       scripts: {
-        files: ['source/**/**/*.js', 'source/**/*.html', 'source/**/*.scss', 'source/**/*.hbs'],
-        tasks: ['compass:dev', 'autoprefixer','browserify', 'handlebars', 'copy:main'],
+        files: ['frontend/source/**/**/*.js', 'frontend/source/**/*.html', 'frontend/source/**/*.scss', 'frontend/source/**/*.hbs'],
+        tasks: ['sass', 'autoprefixer','browserify', 'handlebars', 'copy:main'],
         options: {
           livereload: true
         }
@@ -96,7 +91,6 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-autoprefixer');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-connect');
@@ -104,9 +98,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
+  grunt.loadNpmTasks('grunt-sass');
   
 
   // Default task(s).
-  grunt.registerTask('default', ['compass:dev', 'autoprefixer','browserify','handlebars','copy:main','connect:server', 'watch']);
+  grunt.registerTask('default', ['sass', 'autoprefixer','browserify','handlebars','copy:main','connect:server','watch']);
   // grunt.registerTask('default', ['copy:main','sprite:all','compass:dev', 'autoprefixer', 'browserify','connect:server', 'watch']);
 };

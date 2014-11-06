@@ -1,1 +1,0 @@
-module.exports = ['huan','test','please'];

@@ -3,10 +3,6 @@
     "document": true,
     "window": true,
     "-Promise": true,
-    "moment": true,
-    "Pikaday": true,
-    "tinymce": true
-
   },
   "browser" : true,
   "boss" : true,
