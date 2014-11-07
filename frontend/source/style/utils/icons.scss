@@ -5,3 +5,51 @@
   width: 37px;
   height: 27px;
 }
+
+.icon-add {
+  display: inline-block;
+  background-image: url(../img/spritesheet.png);
+  background-position: -12px -231px;
+  width: 16px;
+  height: 15px;
+}
+
+.icon-title {
+  display: inline-block;
+  background-image: url(../img/spritesheet.png);
+  background-position: -8px -155px;
+  width: 54px;
+  height: 55px;
+}
+
+.icon-text {
+  display: inline-block;
+  background-image: url(../img/spritesheet.png);
+  background-position: -62px -155px;
+  width: 54px;
+  height: 55px;
+}
+
+.icon-image {
+  display: inline-block;
+  background-image: url(../img/spritesheet.png);
+  background-position: -116px -155px;
+  width: 54px;
+  height: 55px;
+}
+
+.icon-nav {
+  display: inline-block;
+  background-image: url(../img/spritesheet.png);
+  background-position: -170px -155px;
+  width: 54px;
+  height: 55px;
+}
+
+.icon-toggle-off {
+  display: inline-block;
+  background-image: url(../img/spritesheet.png);
+  background-position: -5px -303px;
+  width: 53px;
+  height: 23px;
+}

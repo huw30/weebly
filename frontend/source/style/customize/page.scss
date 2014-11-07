@@ -1,0 +1,13 @@
+.view-container {
+  position: absolute;
+  top: 42px;
+  left: 234px;
+  bottom: 0;
+  right: 0;
+  padding: 40px 75px 50px;
+  border: 1px solid white;
+  border-top-left-radius: 2px;
+  background-color: white;
+  box-shadow: -1px 0px 10px 0px rgba(28,45,59,1);
+  z-index: 1;
+}
