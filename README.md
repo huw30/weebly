@@ -8,6 +8,9 @@ Day 1: Get familiar with this project. Read though requirements, F&Q and assets.
 
 Day 2: Set up project structure. Sass as CSS preprocessor, Handlebars as HTML templating system, Browserify as dependency management tool, Express.js for backend development. These could be changed during the development process, not sure if it’ll be better to use a client side frame work Ember.js/Angular. I’ll continue considering this. 
 
+Day 3: Built data store model. Use Mongo DB as database. 
+
+Day 4: Finished basic styling. Top bar, sidebar and page container.
 
 
 ####Server Specification
