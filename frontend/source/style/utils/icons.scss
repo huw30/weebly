@@ -17,7 +17,7 @@
 .icon-title {
   display: inline-block;
   background-image: url(../img/spritesheet.png);
-  background-position: -8px -155px;
+  background-position: -9px -155px;
   width: 54px;
   height: 55px;
 }
@@ -25,7 +25,7 @@
 .icon-text {
   display: inline-block;
   background-image: url(../img/spritesheet.png);
-  background-position: -62px -155px;
+  background-position: -63px -155px;
   width: 54px;
   height: 55px;
 }
@@ -33,7 +33,7 @@
 .icon-image {
   display: inline-block;
   background-image: url(../img/spritesheet.png);
-  background-position: -116px -155px;
+  background-position: -117px -155px;
   width: 54px;
   height: 55px;
 }
@@ -41,7 +41,7 @@
 .icon-nav {
   display: inline-block;
   background-image: url(../img/spritesheet.png);
-  background-position: -170px -155px;
+  background-position: -171px -155px;
   width: 54px;
   height: 55px;
 }
@@ -60,4 +60,15 @@
   background-position: -14px -395px;
   width: 109px;
   height: 113px;
+}
+
+.icon-delete {
+  display: inline-block;
+  background-image: url(../img/spritesheet.png);
+  background-position: -8px -98px;
+  width: 40px;
+  height: 40px;
+  &:hover {
+    background-position: -51px -98px;
+  }
 }

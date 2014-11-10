@@ -1,9 +1,27 @@
-var $ = require('jquery');
-var elements = require('./models/elements');
-require('./dragdrop');
+// var listeners = require('./listeners');
+// console.log(listeners);
 
-$('.element-item span:first-of-type').each(function(){
-  $(this).dragdrop();
-});
+require('./handler');
+// console.log(handler.insert);
+// handler.init();
+// require('./view');
+
+// /* template compiler */
+// var textTemplate = JST['frontend/source/templates/element-text.hbs'];
+// var imageTemplate = JST['frontend/source/templates/element-image.hbs'];
+// module.exports.textElement = function() {
+//   return textTemplate();
+// }
+// module.exports.imageElement = function() {
+//   return imageTemplate();
+// }
+
+// /*Templates*/
+
+  // var textTemplate = JST['frontend/source/templates/element-text.hbs'];
+  // var imageTemplate = JST['frontend/source/templates/element-image.hbs'];
+
+
+
 
 

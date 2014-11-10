@@ -13,7 +13,20 @@
   overflow: scroll;
 }
 
+.divider {
+  position: relative;
+  width: 100%;
+  height: 55px;
+  padding: 15px 0;
+  span.active {
+    display: inline-block;
+    width: 100%;
+    border-top: 2px dashed $malibu;
+  }
+}
+
 .page-tab {
+  padding: 0 15px;
   li {
     height: 40px;
     min-width: 123px;
@@ -26,42 +39,77 @@
     font-size: 14px;
     color: white;
   }
-  margin-bottom: 25px;
 }
 
 .page-content {
   width: 100%;
-  .element-image {
-    display: inline-block;
-    margin: 25px 0;
-    width: 100%;
-    height: 285px;
-    padding: 72px;
-    background-color: $athens-gray;
-    border: 2px solid $heather;
-    border-radius: 5px;
-    text-align: center;
-
-    .add-image-text {
-    display: block;
-    font-family: 'ProximaNova-Reg';
-    color: $heather;
-    font-size: 13px;
-      span {
-        font-size: 19px;
-        vertical-align: middle;
-        margin-left: 5px;
+  .element-wrapper {
+    position: relative;
+    .element-image {
+      display: inline-block;
+      width: 100%;
+      height: 285px;
+      padding: 72px;
+      background-color: $athens-gray;
+      border: 2px solid $heather;
+      border-radius: 5px;
+      text-align: center;
+      .add-image-text {
+      display: block;
+      font-family: 'ProximaNova-Reg';
+      color: $heather;
+      font-size: 13px;
+        span {
+          font-size: 19px;
+          vertical-align: middle;
+          margin-left: 5px;
+        }
+      }
+    }
+    &:hover, &:focus {
+      border-radius: 5px;
+      border: 2px solid $anakiwa;
+      .element-image {
+        border: none;
+      }
+      span:nth-child(3) {
+        visibility: visible;
       }
     }
   }
-  .element-text {
+  .element-wrapper {
+    position: relative;
+    .element-text {
     display: inline-block;
-    margin: 25px 0;
+    width: 100%;
+    padding: 15px;
     font-family: 'ProximaNova-Reg';
     color: $dark-grey;
     font-size: 14px;
     text-align: justify;
     line-height: 25px;
     letter-spacing: 0.3px;
+    outline: none;
+    }
+    &:hover {
+      border-radius: 5px;
+      border: 2px solid $anakiwa;
+      span {
+        visibility: visible;
+      }
+    }
+
+    [contentEditable=true]:empty:not(:focus):before{
+      content: attr(data-placeholder);
+      color: $dark-grey;
+      font-style: italic;
+    }
+  }
+  span.icon-delete {
+    visibility: hidden;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    cursor: pointer;
   }
 }
