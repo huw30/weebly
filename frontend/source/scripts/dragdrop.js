@@ -1,4 +1,4 @@
-var helper = require('./dragdropHelper');
+var view = require('./view');
 
 var dragdrop = {
   /* Draggable event handlers */
@@ -56,7 +56,7 @@ var dragdrop = {
   drop: function(event) {
     $(this).children().removeClass('active');
     var type = event.dataTransfer.getData('type');
-    helper.insert(this, type);
+    view.insert(this, type);
     // console.log(handler);
     event.preventDefault();
     return false;
@@ -78,7 +78,7 @@ var dragdrop = {
     $('.divider:last').children().removeClass('active');
     var type = event.dataTransfer.getData('type');
     if (!isInArray(event.target, $('.divider').toArray())) {
-      helper.insert($('.divider:last'), type);
+      view.insert($('.divider:last'), type);
     }
   }
 };

@@ -1,10 +1,4 @@
-// var listeners = require('./listeners');
-// console.log(listeners);
-
-require('./handler').init();
-// console.log(handler.insert);
-// handler.init();
-// require('./view');
+require('./view').init();
 
 // /* template compiler */
 // var textTemplate = JST['frontend/source/templates/element-text.hbs'];

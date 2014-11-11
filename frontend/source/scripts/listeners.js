@@ -1,26 +1,22 @@
 /*Add listeners*/
 
 var dragdrop = require('./dragdrop');
+var handler = require('./handler');
 
 var listeners = {
   hoverIconDelete: function(element){
-    $(element).find('.icon-delete').mouseover(function() {
-      $(this).parents('.element-wrapper').css('border-color', '#FB6A6C');
-    }).mouseleave(function() {
-      $(this).parents('.element-wrapper').css('border-color', '#87C5FF');
-    });
+    $(element).find('.icon-delete')
+    .mouseover(handler.appearance.changeBorderRed)
+    .mouseleave(handler.appearance.changeBorderBlue);
   },
   clickIconDelete: function(element) {
-    $(element).find('.icon-delete').click(function() {
-      $(this).parents('.element-wrapper').prev().detach();
-      $(this).parents('.element-wrapper').detach();
-    });
+    $(element).find('.icon-delete').click(handler.appearance.deleteElement);
   },
   clickIconAdd: function(element) {
-    $(element).find('.icon-add').click(function() {
-      console.log($(this).siblings('.edit-page').html());
-      //require insert
-    });
+    $(element).find('.icon-add').click(handler.appearance.addNewPage);
+  },
+  clickToggle: function(element) {
+    $(element).click(handler.appearance.toggleSwitch);
   },
   draggable: function(draggable) {
     $(draggable).attr('draggable', true);
