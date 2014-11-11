@@ -1,5 +1,5 @@
-var view = {
-  createDivider: function () {
+var createDOM = {
+  divider: function () {
     var divider = document.createElement("div");
     var span = document.createElement("span");
     divider.appendChild(span);
@@ -7,7 +7,7 @@ var view = {
     return divider;
   },
 
-  createImageElement: function () {
+  imageElement: function () {
     var wrapper = document.createElement("div");
     wrapper.className ='element-wrapper';
     var image = document.createElement("div");
@@ -33,7 +33,7 @@ var view = {
     return wrapper;
   },
 
-  createTextElement: function() {
+  textElement: function() {
     var wrapper = document.createElement('div');
     wrapper.className ='element-wrapper';
     var text = document.createElement('div');
@@ -47,8 +47,20 @@ var view = {
     wrapper.appendChild(span);
     wrapper.appendChild(text);
     return wrapper;
+  },
+
+  page: function() {
+    var pageButton = document.createElement('li'),
+    pageTab = document.createElement('li');
+    pageButton.className = "page";
+    //TODO add spans
+    var page = {
+      pageButton: pageButton,
+      pageTab: pageTab
+    }
+    return page;
   }
 }
 
-module.exports = view;
+module.exports = createDOM;
 

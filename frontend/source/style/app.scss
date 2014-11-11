@@ -99,10 +99,22 @@ ul {
     background-color: transparent;
     border-radius: 5px;
     font-size: 13px;
-    color: $light-grey;
+    // color: $light-grey;
+    [contentEditable=true]:empty:not(:focus):before{
+      content: attr(data-placeholder);
+      color: $light-grey;
+    }
+    .edit-page {
+      display: inline-block; 
+      outline: none;
+      cursor: text;
+      color: white;
+    }
     span {
       position: absolute;
+      top: 8px;
       right: 8px;
+      cursor: pointer;
     }
   }
 }

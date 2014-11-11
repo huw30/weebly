@@ -1,7 +1,7 @@
 // var listeners = require('./listeners');
 // console.log(listeners);
 
-require('./handler');
+require('./handler').init();
 // console.log(handler.insert);
 // handler.init();
 // require('./view');

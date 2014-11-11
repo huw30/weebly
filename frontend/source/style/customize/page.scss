@@ -26,7 +26,6 @@
 }
 
 .page-tab {
-  padding: 0 15px;
   li {
     height: 40px;
     min-width: 123px;
@@ -43,6 +42,7 @@
 
 .page-content {
   width: 100%;
+  height: 100%;
   .element-wrapper {
     position: relative;
     .element-image {
@@ -98,7 +98,6 @@
         visibility: visible;
       }
     }
-
     [contentEditable=true]:empty:not(:focus):before{
       content: attr(data-placeholder);
       color: $dark-grey;

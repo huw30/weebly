@@ -1,3 +1,5 @@
+/*Add listeners*/
+
 var dragdrop = require('./dragdrop');
 
 var listeners = {
@@ -14,6 +16,12 @@ var listeners = {
       $(this).parents('.element-wrapper').detach();
     });
   },
+  clickIconAdd: function(element) {
+    $(element).find('.icon-add').click(function() {
+      console.log($(this).siblings('.edit-page').html());
+      //require insert
+    });
+  },
   draggable: function(draggable) {
     $(draggable).attr('draggable', true);
     draggable.addEventListener('dragstart', dragdrop.dragStart, false);
@@ -25,6 +33,11 @@ var listeners = {
     droptarget.addEventListener('dragover' , dragdrop.dragOver, false);
     droptarget.addEventListener('dragleave', dragdrop.dragLeave, false);
     droptarget.addEventListener('drop', dragdrop.drop, false);
+  },
+  dropPageContent: function(pageContent) {
+    pageContent.addEventListener('dragover' , dragdrop.pageDragOver, false);
+    pageContent.addEventListener('dragleave', dragdrop.pageDragLeave, false);
+    pageContent.addEventListener('drop', dragdrop.pageDrop, false);
   }
 };
 

@@ -60,8 +60,32 @@ var dragdrop = {
     // console.log(handler);
     event.preventDefault();
     return false;
+  },
+
+  pageDragOver: function(event) {
+    //if user not hover on any of the divider then find the last divider and active it
+    if (!isInArray(event.target, $('.divider').toArray())) {
+      $('.divider:last').children().addClass('active');
+    }
+    event.preventDefault();
+  },
+
+  pageDragLeave: function(event) {
+    $('.divider:last').children().removeClass('active');
+  },
+  
+  pageDrop: function(event) {
+    $('.divider:last').children().removeClass('active');
+    var type = event.dataTransfer.getData('type');
+    if (!isInArray(event.target, $('.divider').toArray())) {
+      helper.insert($('.divider:last'), type);
+    }
   }
 };
 
 module.exports = dragdrop;
+
+function isInArray(value, array) {
+  return array.indexOf(value) > -1;
+}
 
