@@ -40,7 +40,6 @@ module.exports = function(grunt) {
         src: 'frontend/source/scripts/app.js',
         dest: 'frontend/build/js/app.js'
       }
-
     },
 
     //assets management

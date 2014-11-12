@@ -4,11 +4,9 @@ var dragdrop = {
   /* Draggable event handlers */
   dragStart: function(event) {
     event.dataTransfer.effectAllowed  = "move";
-    event.dataTransfer.dropEffect     = "move";
     //get element type and set to dataTransfer object
     var type = $(this).attr('class').match('-([^/]*)$')[1];
     event.dataTransfer.setData('type', type);
-
     // this.style.zIndex = 9999; //not working, no idea why
     // this.style.boxShadow = "0px 8px 18px 3px rgba(155,157,155,1)";  //not working, no idea why
     this.style.border = "1px solid #74777B";
@@ -24,12 +22,11 @@ var dragdrop = {
 
   drag: function(event) {
     event.dataTransfer.effectAllowed  = "move";
-    event.dataTransfer.dropEffect     = "move";
-
     $(this).offset({
       top: event.pageY + this.posY - this.elHeight,
       left: event.pageX + this.posX - this.elWidth
     });
+    event.preventDefault();
   },
 
   dragEnd: function(event) {
@@ -40,9 +37,19 @@ var dragdrop = {
       top: this.originalY,
       left: this.originalX
     });
+    event.preventDefault();
   },
 
-
+  elementDragStart: function(event) {
+    event.dataTransfer.effectAllowed  = "move";
+    event.dataTransfer.setData('id', $(event.target).attr('id'));
+    $(event.target).children('.element-wrapper').css('opacity', '0.2');
+  },
+  elementDragEnd: function(event) {
+    $(event.target).children('.element-wrapper').css('opacity', '1');
+    event.preventDefault();
+  },
+  /* Droppable event handlers */
   dragOver: function(event) {
     $(this).children().addClass('active');
     event.preventDefault();
@@ -51,34 +58,45 @@ var dragdrop = {
 
   dragLeave: function(event) {
     $(this).children().removeClass('active');
+    event.preventDefault();
   },
 
   drop: function(event) {
     $(this).children().removeClass('active');
     var type = event.dataTransfer.getData('type');
-    view.insert(this, type);
-    // console.log(handler);
+    //if the dragged is an exist element then move this element
+    var id = event.dataTransfer.getData('id');
+    if (id) {
+      view.DOMHandle.moveElement(this, id); //else insert a new element
+    } else {
+      view.DOMHandle.insertElement(this, type); //else insert a new element
+    }
     event.preventDefault();
     return false;
   },
 
-  pageDragOver: function(event) {
-    //if user not hover on any of the divider then find the last divider and active it
+  onPageDragOver: function(event) {
+    //if usinsertElementer not hover on any of the divider then find the last divider and active it
     if (!isInArray(event.target, $('.divider').toArray())) {
       $('.divider:last').children().addClass('active');
     }
     event.preventDefault();
   },
 
-  pageDragLeave: function(event) {
+  onPageDragLeave: function(event) {
     $('.divider:last').children().removeClass('active');
   },
   
-  pageDrop: function(event) {
+  onPageDrop: function(event) {
     $('.divider:last').children().removeClass('active');
     var type = event.dataTransfer.getData('type');
-    if (!isInArray(event.target, $('.divider').toArray())) {
-      view.insert($('.divider:last'), type);
+    var id = event.dataTransfer.getData('id');
+    if (!isInArray(event.target, $('.divider').toArray())) { 
+      if (id) {
+        view.DOMHandle.moveElement($('.divider:last'), id); //else insert a new element
+      } else {
+        view.DOMHandle.insertElement($('.divider:last'), type); //else insert a new element
+      }
     }
   }
 };

@@ -4,7 +4,7 @@
   left: 234px;
   bottom: 0;
   right: 0;
-  padding: 40px 73px 50px;
+  padding: 42px 72px 50px;
   border: 1px solid white;
   border-top-left-radius: 2px;
   background-color: white;
@@ -16,8 +16,8 @@
 .divider {
   position: relative;
   width: 100%;
-  height: 55px;
-  padding: 15px 0;
+  height: 40px;
+  padding: 3px 0;
   span.active {
     display: inline-block;
     width: 100%;
@@ -27,16 +27,24 @@
 
 .page-tab {
   li {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
     height: 40px;
     min-width: 123px;
     padding: 10px 0;
     text-align: center;
-    background-color: $nepal;
-    border: 2px solid $gothic;
+    background-color: transparent;
+    border: 2px solid $nepal;
     border-radius: 5px;
     font-family: 'ProximaNova-Reg';
     font-size: 14px;
-    color: white;
+    color: $nepal;
+    &.active {
+      color: white;
+      border: 2px solid $bali-hai;
+      background-color: $nepal;
+    }
   }
 }
 
@@ -66,49 +74,63 @@
         }
       }
     }
+    .element-text {
+      display: inline-block;
+      width: 100%;
+      min-height: 150px;
+      padding: 15px 0;
+      font-family: 'ProximaNova-Reg';
+      color: $dark-grey;
+      font-size: 14px;
+      text-align: justify;
+      line-height: 25px;
+      letter-spacing: 0.3px;
+      outline: none;
+    }
     &:hover, &:focus {
-      border-radius: 5px;
+      border-radius: 7px;
       border: 2px solid $anakiwa;
       .element-image {
         border: none;
       }
-      span:nth-child(3) {
+      span.icon-delete, span.icon-resize, span.icon-resize-rotate {
         visibility: visible;
       }
     }
-  }
-  .element-wrapper {
-    position: relative;
-    .element-text {
-    display: inline-block;
-    width: 100%;
-    padding: 15px;
-    font-family: 'ProximaNova-Reg';
-    color: $dark-grey;
-    font-size: 14px;
-    text-align: justify;
-    line-height: 25px;
-    letter-spacing: 0.3px;
-    outline: none;
-    }
-    &:hover {
-      border-radius: 5px;
-      border: 2px solid $anakiwa;
-      span {
-        visibility: visible;
-      }
-    }
+
     [contentEditable=true]:empty:not(:focus):before{
       content: attr(data-placeholder);
       color: $dark-grey;
       font-style: italic;
     }
-  }
-  span.icon-delete {
-    visibility: hidden;
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    cursor: pointer;
+    >span.icon-delete {
+      visibility: hidden;
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      cursor: pointer;
+    }
+
+    >span:nth-child(2) {
+      visibility: hidden;
+      position: absolute;
+      top: 45%;
+      left: -5px;
+      cursor: move;
+    }
+    >span:nth-child(3) {
+      visibility: hidden;
+      position: absolute;
+      top: 45%;
+      right: -5px;
+      cursor: move;
+    }
+    >span.icon-resize-rotate {
+      visibility: hidden;
+      position: absolute;
+      left: 45%;
+      bottom: -23px;
+      cursor: move;
+    }
   }
 }

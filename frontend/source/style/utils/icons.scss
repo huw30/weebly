@@ -12,13 +12,16 @@
   background-position: -12px -231px;
   width: 16px;
   height: 15px;
+  &:hover {
+    background-position: -12px -250px;
+  }
 }
 
 .icon-title {
   display: inline-block;
   background-image: url(../img/spritesheet.png);
   background-position: -9px -155px;
-  width: 54px;
+  width: 53px;
   height: 55px;
 }
 
@@ -26,7 +29,7 @@
   display: inline-block;
   background-image: url(../img/spritesheet.png);
   background-position: -63px -155px;
-  width: 54px;
+  width: 53px;
   height: 55px;
 }
 
@@ -34,7 +37,7 @@
   display: inline-block;
   background-image: url(../img/spritesheet.png);
   background-position: -117px -155px;
-  width: 54px;
+  width: 53px;
   height: 55px;
 }
 
@@ -42,7 +45,7 @@
   display: inline-block;
   background-image: url(../img/spritesheet.png);
   background-position: -171px -155px;
-  width: 54px;
+  width: 53px;
   height: 55px;
 }
 
@@ -83,4 +86,48 @@
   &:hover {
     background-position: -51px -98px;
   }
+}
+
+.icon-delete-grey {
+  display: inline-block;
+  background-image: url(../img/spritesheet.png);
+  background-position: -52px -231px;
+  width: 16px;
+  height: 15px;
+}
+
+.icon-edit {
+  display: inline-block;
+  background-image: url(../img/spritesheet.png);
+  background-position: -32px -231px;
+  width: 16px;
+  height: 15px;
+}
+
+.icon-resize {
+  display: inline-block;
+  background-image: url(../img/spritesheet.png);
+  background-position: -4px -43px;
+  width: 8px;
+  height: 43px;
+}
+.icon-resize-rotate {
+  display: inline-block;
+  background-image: url(../img/spritesheet.png);
+  background-position: -4px -43px;
+  width: 8px;
+  height: 43px;
+  transform: rotate(90deg);
+}
+
+.icon-handle {
+  width: 55px;
+  height: 15px;
+  border: 1px solid #95d3ff;
+  border-radius: 2px;
+  background-repeat: no-repeat;
+  background-color: #fff;
+  transition: background-color 0.05s ease-in,border-color 0.05s ease-in;
+  background-image: url(../img/spritesheet.png);
+  background-position: -4px -43px;
 }

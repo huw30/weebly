@@ -22,13 +22,11 @@
   },
   "browser": {
     "jquery": "./bower_components/jquery/dist/jquery.min.js",
-    "handlebars": "./node_modules/handlebars/dist/handlebars.min.js",
-    "jqueryui": "./bower_components/jquery-ui/jquery-ui.min.js"
+    "handlebars": "./node_modules/handlebars/dist/handlebars.min.js"
   },
   "browserify-shim": {
     "jquery": "$",
-    "handlebars": "Handlebars",
-    "jqueryui": "jqueryui"
+    "handlebars": "Handlebars"
   },
   "browserify": {
     "transform": [

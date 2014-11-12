@@ -46,11 +46,10 @@ ul {
   left: 0;
   bottom: 0;
   width: 236px;
-  // width: 235px;
   background-color: $dark-blue;
   font-family: 'ProximaNova-Sbold';
   font-size: 13px;
-  // z-index: 0;
+  overflow: scroll;
 }
 
 .sidebar-content {
@@ -80,14 +79,50 @@ ul {
   border-bottom: 2px solid $deep-grey;
   border-top: 2px solid $deep-grey;
   .page{
+    position: relative;
     height: 35px;
     width: 171px;
-    padding: 10px 15px;
+    padding: 8px 15px;
     margin-bottom: 8px;
+    border: 2px solid $main-blue;
     background-color: $main-blue;
     border-radius: 5px;
     font-size: 13px;
     color: white;
+    &.edit {
+      border-color:  $light-grey;
+      background: transparent;
+      &:hover {
+        border-color:  $light-grey !important;
+        background: transparent !important;
+        span.icon-edit, span.icon-delete-grey {
+          visibility: visible;
+        }
+      }
+    }
+    &:hover {
+      border-color:  $light-grey;
+      background-color: $light-grey;
+      span.icon-edit, span.icon-delete-grey {
+        visibility: visible;
+      }
+    }
+    div {
+      display: inline-block;
+      outline: none;
+    }
+    span.icon-edit {
+      visibility: hidden;
+      position: absolute;
+      top: 9px;
+      right: 30px;
+    }
+    span.icon-delete-grey {
+      visibility: hidden;
+      position: absolute;
+      top: 9px;
+      right: 8px;
+    }
   }
   .add-page {
     position: relative;
@@ -99,13 +134,15 @@ ul {
     background-color: transparent;
     border-radius: 5px;
     font-size: 13px;
-    // color: $light-grey;
     [contentEditable=true]:empty:not(:focus):before{
       content: attr(data-placeholder);
       color: $light-grey;
     }
     .edit-page {
       display: inline-block; 
+      height: 17px;
+      width: 120px;
+      overflow: scroll;
       outline: none;
       cursor: text;
       color: white;
@@ -129,6 +166,10 @@ ul {
     padding: 18px;
     float: left;
     text-align: center;
+    &:hover {
+      // background-color: $fiord;
+      cursor: move;
+    }
     span:nth-child(2) {
       display: block;
       margin-top: 3px;
