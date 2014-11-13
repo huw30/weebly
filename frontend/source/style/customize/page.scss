@@ -37,7 +37,7 @@
     background-color: transparent;
     border: 2px solid $nepal;
     border-radius: 5px;
-    font-family: 'ProximaNova-Reg';
+    font-family: 'ProximaNova-Reg', sans-serif;
     font-size: 14px;
     color: $nepal;
     &.active {
@@ -64,7 +64,7 @@
       text-align: center;
       .add-image-text {
       display: block;
-      font-family: 'ProximaNova-Reg';
+      font-family: 'ProximaNova-Reg', sans-serif;
       color: $heather;
       font-size: 13px;
         span {
@@ -79,7 +79,7 @@
       width: 100%;
       min-height: 150px;
       padding: 15px 0;
-      font-family: 'ProximaNova-Reg';
+      font-family: 'ProximaNova-Reg', sans-serif;
       color: $dark-grey;
       font-size: 14px;
       text-align: justify;

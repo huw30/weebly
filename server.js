@@ -1,9 +1,8 @@
 var express  = require('express');
 var path     = require('path');
-var routes   = require('./backend/routes');
 var index    = require('./backend/routes/index');
-var elements = require('./backend/routes/elements');
-
+var routes = require('./backend/routes/routes');
+var settings = require('./settings');
 
 var app = express();
 
@@ -15,13 +14,17 @@ app.configure(function() {
   app.use(express.cookieParser());
   app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(express.session({secret: "secret key"}));
+  app.use(express.session({
+    secret: settings.cookieSecret,
+    cookie: {maxAge: 1000 * 60 * 60 * 24 * 30}, //30 days
+    url: settings.url
+  }));
 
   app.use(app.router);
   app.use(express.static(__dirname + '/public/' ));
   app.use('/', express.static(__dirname + '/frontend/build' ));
   app.use(index);
-  elements(app);
+  routes(app);
 });
 
 

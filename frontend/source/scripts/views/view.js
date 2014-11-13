@@ -1,4 +1,4 @@
-//handles DOM append and add event exceptionHandlerProvider
+//handles DOM append and add event listeners and handlers
 var $ = require('jquery');
 var listeners = require('./listeners');
 var data = {id: 0};
@@ -78,15 +78,15 @@ module.exports.DOMHandle = {
   deleteElement: function() {
     $(this).parents('.element-divider-wrapper').detach();
   },
-  addNewPage: function() {
-    var name = $(this).siblings('.edit-page').html();
+  addNewPage: function(element) {
+    var name = $(element).siblings('.edit-page').html();
     var page = pageTemplate(name);
     listeners.clickIconEdit($(page.pageButton).find('.icon-edit'));
     listeners.hoverIconDeleteGrey($(page.pageButton).find('.icon-delete-grey'));
     listeners.clickIconDeletGrey($(page.pageButton).find('.icon-delete-grey'));
     $(page.pageButton).insertBefore($('.add-page'));
     $(page.pageTab).appendTo($('.page-tab'));
-    $('.edit-page').empty();
+    $(element).siblings('.edit-page').empty();
     //TODO add listent to tab
   },
   deletePage: function() {

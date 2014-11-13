@@ -1,4 +1,1 @@
-require('./view').init();
-
-
-
+require('./views/view').init();

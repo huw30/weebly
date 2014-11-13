@@ -18,7 +18,9 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-sass": "^0.16.0",
     "grunt-spritesmith": "^2.20.0",
-    "handlebars": "^2.0.0"
+    "handlebars": "^2.0.0",
+    "vow": "^0.4.7",
+    "mongodb": "*"
   },
   "browser": {
     "jquery": "./bower_components/jquery/dist/jquery.min.js",

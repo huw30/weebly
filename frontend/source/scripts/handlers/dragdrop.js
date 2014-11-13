@@ -1,4 +1,4 @@
-var view = require('./view');
+var view = require('../views/view');
 
 var dragdrop = {
   /* Draggable event handlers */
@@ -7,7 +7,6 @@ var dragdrop = {
     //get element type and set to dataTransfer object
     var type = $(this).attr('class').match('-([^/]*)$')[1];
     event.dataTransfer.setData('type', type);
-    // this.style.zIndex = 9999; //not working, no idea why
     // this.style.boxShadow = "0px 8px 18px 3px rgba(155,157,155,1)";  //not working, no idea why
     this.style.border = "1px solid #74777B";
     this.style.borderRadius = "5px";

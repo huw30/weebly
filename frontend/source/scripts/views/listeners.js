@@ -1,7 +1,8 @@
-/*Add listeners*/
+/*All listeners are defined here*/
 
-var dragdrop = require('./dragdrop'); //another 'view'
+var dragdrop = require('../handlers/dragdrop');
 var view = require('./view');
+var Page = require('../models/page');
 
 var listeners = {
   hoverIconDelete: function(element){
@@ -13,7 +14,10 @@ var listeners = {
     $(element).find('.icon-delete').click(view.DOMHandle.deleteElement);
   },
   clickIconAdd: function(element) {
-    $(element).find('.icon-add').click(view.DOMHandle.addNewPage);
+    $(element).find('.icon-add').click(function(){
+      // Page.newPage()
+      // view.DOMHandle.addNewPage
+    )};
   },
   clickToggle: function(element) {
     $(element).click(view.appearance.toggleSwitch);
@@ -49,7 +53,6 @@ var listeners = {
   elementDrag: function(draggable) {
     $(draggable).attr('draggable', true);
     draggable.addEventListener('dragstart', dragdrop.elementDragStart, false);
-    draggable.addEventListener('drag', dragdrop.elementDrag, false);
     draggable.addEventListener('dragend', dragdrop.elementDragEnd, false);
   }
 };
