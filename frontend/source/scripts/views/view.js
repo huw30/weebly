@@ -1,127 +1,88 @@
-//handles DOM append and add event listeners and handlers
 var $ = require('jquery');
-var listeners = require('./listeners');
-var data = {id: 0};
-var data1 = {id:1};
+var Page = require('../models/page');
+var Element = require('../models/element');
+var templates = require('../views/templates');
+var dragdrop = require('../components/dragdrop');
 
 module.exports.init = function() {
+  //add new page handler
+  createNewPage($('.icon-add'));
+
+  //init drag items
   $('.element-item span:first-of-type').each(function() {
-    listeners.draggable(this);
+    this.addEventListener('dragstart', dragdrop.dragStart, false);
+    this.addEventListener('drag', dragdrop.drag, false);
+    this.addEventListener('dragend', dragdrop.dragEnd, false);
   });
-  $('.divider').each(function() {
-    listeners.droppable(this);
+
+  //get all pages
+  Page.getAll().then(function(pages) {
+    if (pages.length > 0) {
+      pages.forEach(function(page) {
+        insertPage(page);
+      });
+      var id = $('.page-list li:first-of-type').attr('id');
+      //get all elements of first tab
+      getAllElements(id);
+    }
   });
-  listeners.dropPageContent($('.page-content')[0]);
-  listeners.clickIconAdd($('.add-page'));
-  listeners.clickToggle($('.setting .icon-toggle-off'));
 };
 
-module.exports.appearance = {
-  changeBorderRed: function() {
-    $(this).parents('.element-wrapper').css('border-color', '#FE6A6D');
-    $(this).siblings('.icon-resize').hide();
-    $(this).siblings('.icon-resize-rotate').hide();
-  },
-  changeBorderBlue: function() {
-    $(this).parents('.element-wrapper').css('border-color', '#87C5FF');
-    $(this).siblings('.icon-resize').show();
-    $(this).siblings('.icon-resize-rotate').show();
-
-  },
-  toggleSwitch: function() {
-    $(this).toggleClass('icon-toggle-off icon-toggle-on');
-  },
-  editPage: function() {
-    $(this).parent().toggleClass('edit');
-    if ($(this).siblings('div').attr('contenteditable') == 'false') {
-      $(this).siblings('div').attr('contenteditable', 'true');
-    } else {
-      $(this).siblings('div').attr('contenteditable', 'false');
-      console.log($(this).siblings('div').html());
-      //get page tab id and change inner html
-    }
-  },
-  changePageRed: function() {
-    $(this).parent().css('background-color', '#FE6A6D');
-    $(this).parent().css('border-color', '#FE6A6D');
-    // $(this).siblings('.icon-edit').css('visibility', 'hidden');
-  },
-  changePageBlue: function() {
-    $(this).parent().css('background-color', '#488ACD');
-    $(this).parent().css('border-color', '#488ACD');
-    // $(this).siblings('.icon-edit').css('visibility', 'visible');
+module.exports.rearrange = function(place, id) {
+    console.log('hey');
+    //findAllElement
+    //send request to rearrange [get all id] //need test 
+    //then
+    // $('#'+id).insertBefore($(place).parent());
+},
+module.exports.addNew = function(place, page, type) {
+  var sendElement = {
+    page: page,
+    type: type
   }
-
-};
-
-module.exports.DOMHandle = {
-  insertElement: function(place, type) {
-    // var divider = $(dividerTemplate())[0];
-    if (type === 'text') {
-      var element = $(textTemplate(data1))[0];
-      listeners.elementDrag(element);
-      listeners.droppable($(element).find('.divider')[0]);
-      listeners.hoverIconDelete(element);
-      listeners.clickIconDelete(element);
-    } else if (type === 'image') {
-      var element = $(imageTemplate(data))[0];
-      listeners.elementDrag(element);
-      listeners.droppable($(element).find('.divider')[0]);
-      listeners.hoverIconDelete(element);
-      listeners.clickIconDelete(element);
-    }
-    $(element).insertBefore($(place).parent());
-  },
-  moveElement: function(place, id) {
-    $('#'+id).insertBefore($(place).parent());
-  },
-  deleteElement: function() {
-    $(this).parents('.element-divider-wrapper').detach();
-  },
-  addNewPage: function(element) {
-    var name = $(element).siblings('.edit-page').html();
-    var page = pageTemplate(name);
-    listeners.clickIconEdit($(page.pageButton).find('.icon-edit'));
-    listeners.hoverIconDeleteGrey($(page.pageButton).find('.icon-delete-grey'));
-    listeners.clickIconDeletGrey($(page.pageButton).find('.icon-delete-grey'));
-    $(page.pageButton).insertBefore($('.add-page'));
-    $(page.pageTab).appendTo($('.page-tab'));
-    $(element).siblings('.edit-page').empty();
-    //TODO add listent to tab
-  },
-  deletePage: function() {
-    $(this).parent().detach();
-    //TODO delete tab PAGE
-  }
-};
-
-
-
-/*TEMPLATE Functions*/
-var textTemplate = JST['frontend/source/templates/element-text.hbs'];
-var imageTemplate = JST['frontend/source/templates/element-image.hbs'];
-// var dividerTemplate = JST['frontend/source/templates/divider.hbs'];
-
-var pageTemplate = function(name) {
-  var pageButton = document.createElement('li'),
-  textDiv = document.createElement('div'),
-  spanEdit = document.createElement('span'),
-  spanDelete = document.createElement('span'),
-  pageTab = document.createElement('li');
-  spanEdit.className = 'icon-edit';
-  spanDelete.className = 'icon-delete-grey';
-  pageButton.className = 'page';
-  textDiv.innerHTML = name;
-  textDiv.contentEditable = 'false';
-  pageButton.appendChild(textDiv);
-  pageButton.appendChild(spanEdit);
-  pageButton.appendChild(spanDelete);
-  pageTab.innerHTML = name;
-  var page = {
-    pageButton: pageButton,
-    pageTab: pageTab
-  }
-  return page;
+  //send request to add new [type] return new element with id 
+  Element.newElement(sendElement).then(function(element) {
+    //render element
+    var el = templates.renderElement(element);
+    //insert before place
+    el.insertBefore($(place).parent());
+  });
 }
+
+function createNewPage(target) {
+  target.click(function() {
+    var self = this;
+    //send request to request new
+    //then render pageButton and pageTab
+    var name = $(this).siblings('.edit-page').html();
+    Page.newPage({name: name}).then(function(page) {
+      //insert into dom
+      insertPage(page);
+      $(self).siblings('.edit-page').html('');
+    });
+  });
+};
+
+function insertPage(page) {
+  var pageButton = templates.renderPageButton(page);
+  pageButton.insertBefore($('li.add-page'));
+  var pageTab = templates.renderPageTab(page);
+  $('.page-tab').append(pageTab);
+};
+
+function getAllElements(pageId) {
+  $('#'+pageId+'-t').addClass('active');
+  var pageContent = templates.renderPageContent({contentId: pageId+'-c'});
+  pageContent[0].addEventListener('dragover' , dragdrop.onPageDragOver, false);
+  pageContent[0].addEventListener('dragleave', dragdrop.onPageDragLeave, false);
+  pageContent[0].addEventListener('drop', dragdrop.onPageDrop, false);
+  $('.view-container').append(pageContent);
+  Element.getAll(pageId).then(function(elements){
+    elements.forEach(function(element) {
+      var el = templates.renderElement(element);
+      el.insertBefore($('#default'));
+    });
+  });
+};
 
 

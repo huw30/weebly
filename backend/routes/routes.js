@@ -5,23 +5,27 @@ module.exports = function(app) {
   app.post('/page/new', function(req, res) {
     var newPage = new Page(req.body.name);
     newPage.save().then(function(page) {
+      page.tabId = page._id+'-t';
+      page.contentId = page._id+'-c';
       res.send(page);
     }).fail(function(err) {
       res.send(err);
     });
   });
 
-  app.get('/page/:id', function(req, res) {
-    var pageId = req.param.id;
-    Page.getOne(pageId).then(function(page) {
-      res.send(page);
-    }).fail(function(err) {
-      res.send(err);
-    });
-  });
+  // app.get('/page/:id', function(req, res) {
+  //   var pageId = req.params.id;
+  //   Page.getOne(pageId).then(function(page) {
+  //     page.tabId = page._id+'-t';
+  //     page.contentId = page._id+'-c';
+  //     res.send(page);
+  //   }).fail(function(err) {
+  //     res.send(err);
+  //   });
+  // });
 
-  app.put('/page/:id', function(req, res) {
-    var pageId = req.param.id;
+  app.post('/page/:id', function(req, res) {
+    var pageId = req.params.id;
     var pageName = req.body.name;
     Page.update(pageId, pageName).then(function() {
       res.send({success: true});
@@ -31,7 +35,7 @@ module.exports = function(app) {
   });
 
   app.del('/page/:id', function(req, res) {
-    var pageId = req.param.id;
+    var pageId = req.params.id;
     Page.remove(pageId).then(function() {
       res.send({success: true});
     }).fail(function(err) {
@@ -41,16 +45,20 @@ module.exports = function(app) {
 
   app.get('/pages', function(req, res) {
     Page.getAll().then(function(pages) {
+      pages.forEach(function(page) {
+        page.tabId = page._id+'-t';
+        page.contentId = page._id+'-c';
+      });
       res.send(pages);
     }).fail(function(err){
       res.send(err);
     });
   });
 
-  //**************************************
+  //********************************Elements**********************
 
   app.post('/element/new', function(req, res) {
-    var newElement = new Element(req.body.page, req.body.type, req.body.position, req.body.content);
+    var newElement = new Element(req.body.page, req.body.type, null, null);
     newElement.save().then(function(element) {
       res.send(element);
     }).fail(function(err) {
@@ -58,17 +66,26 @@ module.exports = function(app) {
     });
   });
 
-  app.get('/element/:id', function(req, res) {
-    var elementId = req.param.id;
-    Element.getOne(elementId).then(function(element) {
-      res.send(element);
-    }).fail(function(err) {
+  app.get('/elements/:id', function(req, res) {
+    var pageId = req.params.id;
+    Element.getAll(pageId).then(function(elements) {
+      res.send(elements);
+    }).fail(function(err){
       res.send(err);
     });
   });
 
-  app.put('/element', function(req, res) {
-    // var pageId = req.param.id;
+  // app.get('/element/:id', function(req, res) {
+  //   var elementId = req.params.id;
+  //   Element.getOne(elementId).then(function(element) {
+  //     res.send(element);
+  //   }).fail(function(err) {
+  //     res.send(err);
+  //   });
+  // });
+
+  app.put('/elements', function(req, res) {
+    // var pageId = req.params.id;
     // var pageName = req.body.name;
     // Page.update(pageId, pageName).then(function() {
     //   res.send({success: true});
@@ -78,7 +95,7 @@ module.exports = function(app) {
   });
   
   app.put('/element/:id', function(req, res) {
-    var elementId = req.param.id;
+    var elementId = req.params.id;
     var content = req.body.content;
     Element.updateContent(elementId, content).then(function() {
       res.send({success: true});
@@ -88,19 +105,10 @@ module.exports = function(app) {
   });
 
   app.del('/element/:id', function(req, res) {
-    var elementId = req.param.id;
+    var elementId = req.params.id;
     Element.remove(elementId).then(function() {
       res.send({success: true});
     }).fail(function(err) {
-      res.send(err);
-    });
-  });
-
-  app.get('/elements', function(req, res) {
-    var pageId = req.body.pageId;
-    Element.getAll(pageId).then(function(elements) {
-      res.send(elements);
-    }).fail(function(err){
       res.send(err);
     });
   });

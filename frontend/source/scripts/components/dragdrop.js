@@ -1,7 +1,6 @@
 var view = require('../views/view');
 
 var dragdrop = {
-  /* Draggable event handlers */
   dragStart: function(event) {
     event.dataTransfer.effectAllowed  = "move";
     //get element type and set to dataTransfer object
@@ -38,7 +37,30 @@ var dragdrop = {
     });
     event.preventDefault();
   },
-
+  dragOver: function(event) {
+    $(this).children().addClass('active');
+    event.preventDefault();
+    return false;
+  },
+  dragLeave: function(event) {
+    $(this).children().removeClass('active');
+    event.preventDefault();
+  },
+  drop: function(event) {
+    $(this).children().removeClass('active');
+    var type = event.dataTransfer.getData('type');
+    var id = event.dataTransfer.getData('id');
+    if (id) {
+      //rearrange
+      view.rearrange(this, id);
+    } else {
+      //add new
+      var pageId = $(this).parents('.page-content').attr('id').slice(0, 24);
+      view.addNew(this, pageId, type);
+    }
+    event.preventDefault();
+    return false;
+  },
   elementDragStart: function(event) {
     event.dataTransfer.effectAllowed  = "move";
     event.dataTransfer.setData('id', $(event.target).attr('id'));
@@ -48,31 +70,6 @@ var dragdrop = {
     $(event.target).children('.element-wrapper').css('opacity', '1');
     event.preventDefault();
   },
-  /* Droppable event handlers */
-  dragOver: function(event) {
-    $(this).children().addClass('active');
-    event.preventDefault();
-    return false;
-  },
-
-  dragLeave: function(event) {
-    $(this).children().removeClass('active');
-    event.preventDefault();
-  },
-
-  drop: function(event) {
-    $(this).children().removeClass('active');
-    var type = event.dataTransfer.getData('type');
-    //if the dragged is an exist element then move this element
-    var id = event.dataTransfer.getData('id');
-    if (id) {
-      view.DOMHandle.moveElement(this, id); //else insert a new element
-    } else {
-      view.DOMHandle.insertElement(this, type); //else insert a new element
-    }
-    event.preventDefault();
-    return false;
-  },
 
   onPageDragOver: function(event) {
     //if usinsertElementer not hover on any of the divider then find the last divider and active it
@@ -81,25 +78,23 @@ var dragdrop = {
     }
     event.preventDefault();
   },
-
   onPageDragLeave: function(event) {
     $('.divider:last').children().removeClass('active');
-  },
-  
+  }, 
   onPageDrop: function(event) {
     $('.divider:last').children().removeClass('active');
     var type = event.dataTransfer.getData('type');
     var id = event.dataTransfer.getData('id');
     if (!isInArray(event.target, $('.divider').toArray())) { 
       if (id) {
-        view.DOMHandle.moveElement($('.divider:last'), id); //else insert a new element
+        view.rearrange($('.divider:last'), id);
       } else {
-        view.DOMHandle.insertElement($('.divider:last'), type); //else insert a new element
+        var pageId = $(this).attr('id').slice(0, 24);
+        view.addNew($('.divider:last'), pageId, type);
       }
     }
   }
 };
-
 module.exports = dragdrop;
 
 function isInArray(value, array) {

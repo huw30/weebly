@@ -1,4 +1,5 @@
 var mongodb = require('mongodb').Db;
+var ObjectID = require('mongodb').ObjectID;
 var vow = require('vow');
 var settings = require('../../settings');
 
@@ -35,40 +36,40 @@ Element.prototype.save = function() {
         if (err) {
           deferred.reject(err);
         }
-        deferred.resolve(element);
+        deferred.resolve(element[0]);
       });
     });
   });
   return deferred.promise();
 };
 
-Element.getOne = function(id) {
-  var deferred = vow.defer();
+// Element.getOne = function(id) {
+//   var deferred = vow.defer();
 
-  mongodb.connect(settings.url, function(err, db) {
-    if (err) {
-      db.close();
-      deferred.reject(err);
-    }
-    db.collection('elements',function(err, collection) {
-      if (err) {
-        db.close();
-        deferred.reject(err);
-      }
-      collection.findOne({
-        id: id
-      }, function(err, element) {
-        db.close();
-        if (err) {
-          deferred.reject(err);
-        }
-        deferred.resolve(element);
-      });
-    });
-  });
+//   mongodb.connect(settings.url, function(err, db) {
+//     if (err) {
+//       db.close();
+//       deferred.reject(err);
+//     }
+//     db.collection('elements',function(err, collection) {
+//       if (err) {
+//         db.close();
+//         deferred.reject(err);
+//       }
+//       collection.findOne({
+//         _id: id
+//       }, function(err, element) {
+//         db.close();
+//         if (err) {
+//           deferred.reject(err);
+//         }
+//         deferred.resolve(element);
+//       });
+//     });
+//   });
 
-  return deferred.promise();
-}
+//   return deferred.promise();
+// }
 
 Element.getAll = function(pageId) {
   var deferred = vow.defer();
@@ -85,6 +86,8 @@ Element.getAll = function(pageId) {
       }
       collection.find({
         page: pageId
+      }).sort({
+        position:1
       }).toArray(function(err, elements) {
         db.close();
         if (err) {
@@ -101,6 +104,8 @@ Element.getAll = function(pageId) {
 Element.updatePosition = function(id, position) {
   var deferred = vow.defer();
   
+  var objectid = new ObjectID(id);
+
   mongodb.connect(settings.url, function(err, db) {
     if (err) {
       deferred.reject(err);
@@ -111,7 +116,7 @@ Element.updatePosition = function(id, position) {
         deferred.reject(err);
       }
       collection.update({
-        id: id
+        _id: objectid
       }, {
         $set: {
           position: position
@@ -132,6 +137,8 @@ Element.updatePosition = function(id, position) {
 Element.updateContent = function(id, content) {
   var deferred = vow.defer();
   
+  var objectid = new ObjectID(id);
+  
   mongodb.connect(settings.url, function(err, db) {
     if (err) {
       deferred.reject(err);
@@ -142,7 +149,7 @@ Element.updateContent = function(id, content) {
         deferred.reject(err);
       }
       collection.update({
-        id: id
+        _id: objectid
       }, {
         $set: {
           content: content
@@ -161,6 +168,7 @@ Element.updateContent = function(id, content) {
 
 Element.remove = function(id) {
   var deferred = vow.defer();
+  var objectid = new ObjectID(id);
   mongodb.connect(settings.url, function(err, db) {
     if (err) {
       deferred.reject(err);
@@ -171,7 +179,7 @@ Element.remove = function(id) {
         deferred.reject(err);
       }
       collection.remove({
-        id: id
+        _id: objectid
       }, {
          w : 1
       }, function(err) {

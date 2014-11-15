@@ -1,4 +1,5 @@
 var mongodb = require('mongodb').Db;
+var ObjectID = require('mongodb').ObjectID;
 var vow = require('vow');
 var settings = require('../../settings');
 
@@ -7,10 +8,9 @@ function Page(name) {
 }
 
 Page.prototype.save = function() {
+  var date = +new Date();
   var deferred = vow.defer();
-  var page = {
-    name: this.name
-  }
+  var name = this.name;
 
   mongodb.connect(settings.url, function(err, db) {
     if (err) {
@@ -22,51 +22,51 @@ Page.prototype.save = function() {
         db.close();
         deferred.reject(err);
       }
-      collection.insert(page, {
-        safe: true
+      collection.insert({
+        date: date,
+        name: name
       }, function(err, page) {
         db.close();
         if (err) {
           deferred.reject(err);
         }
-        deferred.resolve(page);
+        deferred.resolve(page[0]);
       });
     });
   });
   return deferred.promise();
 };
 
-Page.getOne = function(id) {
-  var deferred = vow.defer();
+// Page.getOne = function(id) {
+//   var deferred = vow.defer();
 
-  mongodb.connect(settings.url, function(err, db) {
-    if (err) {
-      db.close();
-      deferred.reject(err);
-    }
-    db.collection('pages',function(err, collection) {
-      if (err) {
-        db.close();
-        deferred.reject(err);
-      }
-      collection.findOne({
-        id: id
-      }, function(err, page) {
-        db.close();
-        if (err) {
-          deferred.reject(err);
-        }
-        deferred.resolve(page);
-      });
-    });
-  });
+//   mongodb.connect(settings.url, function(err, db) {
+//     if (err) {
+//       db.close();
+//       deferred.reject(err);
+//     }
+//     db.collection('pages',function(err, collection) {
+//       if (err) {
+//         db.close();
+//         deferred.reject(err);
+//       }
+//       collection.findOne({
+//         _id: id
+//       }, function(err, page) {
+//         db.close();
+//         if (err) {
+//           deferred.reject(err);
+//         }
+//         deferred.resolve(page);
+//       });
+//     });
+//   });
 
-  return deferred.promise();
-};
+//   return deferred.promise();
+// };
 
 Page.getAll = function() {
   var deferred = vow.defer();
-
   mongodb.connect(settings.url, function(err, db) {
     if (err) {
       db.close();
@@ -77,7 +77,9 @@ Page.getAll = function() {
         db.close();
         deferred.reject(err);
       }
-      collection.find().toArray(function(err, pages) {
+      collection.find().sort({
+        date: 1 
+      }).toArray(function(err, pages) {
         db.close();
         if (err) {
           deferred.reject(err);
@@ -93,6 +95,8 @@ Page.getAll = function() {
 Page.update = function(id, name) {
   var deferred = vow.defer();
   
+  var objectid = new ObjectID(id);
+
   mongodb.connect(settings.url, function(err, db) {
     if (err) {
       deferred.reject(err);
@@ -103,7 +107,7 @@ Page.update = function(id, name) {
         deferred.reject(err);
       }
       collection.update({
-        id: id
+        _id: objectid
       }, {
         $set: {
           name: name
@@ -122,6 +126,8 @@ Page.update = function(id, name) {
 
 Page.remove = function(id) {
   var deferred = vow.defer();
+
+  var objectid = new ObjectID(id);
   mongodb.connect(settings.url, function(err, db) {
     if (err) {
       deferred.reject(err);
@@ -132,15 +138,29 @@ Page.remove = function(id) {
         deferred.reject(err);
       }
       collection.remove({
-        id: id
+        _id: objectid
       }, {
          w : 1
       }, function(err) {
-        db.close();
         if (err) {
+          db.close();
           deferred.reject(err);
         }
-        deferred.resolve();
+        db.collection('elements', function(err, collection) {
+          if (err) {
+            db.close();
+            deferred.reject(err);
+          }
+          collection.remove({
+            page: id
+          }, function(err) {
+            db.close();
+            if (err) {
+              deferred.reject(err);
+            }
+            deferred.resolve();
+          });
+        });
       });
     });
   });

@@ -90,24 +90,6 @@ ul {
     border-radius: 5px;
     font-size: 13px;
     color: white;
-    &.edit {
-      border-color:  $light-grey;
-      background: transparent;
-      &:hover {
-        border-color:  $light-grey !important;
-        background: transparent !important;
-        span.icon-edit, span.icon-delete-grey {
-          visibility: visible;
-        }
-      }
-    }
-    &:hover {
-      border-color:  $light-grey;
-      background-color: $light-grey;
-      span.icon-edit, span.icon-delete-grey {
-        visibility: visible;
-      }
-    }
     div {
       display: inline-block;
       outline: none;
