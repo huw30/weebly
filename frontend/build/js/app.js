@@ -137,7 +137,7 @@ var view = require('../views/view');
 var elementHandlers = {
   changeContent: function(target, id) {
     target.blur(function() {
-      var content = $(this).html();
+      var content = $(this).text();
       //send request to change element content
       Element.edit(id, JSON.stringify({content: content}));
     });
@@ -226,7 +226,7 @@ var pageHandlers = (function() {
         $(this).parent().css('border-color', '#488ACD');
         $(this).parent().css('background-color', '#488ACD');
         $(this).attr('contenteditable', 'false');
-        var newName = {name: $(this).html()};
+        var newName = {name: $(this).text()};
         //sendRequest to change page name
         Page.edit(id, newName).then(function() {
           //change pageTab's name according to id

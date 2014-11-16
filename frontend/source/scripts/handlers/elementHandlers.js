@@ -5,7 +5,7 @@ var view = require('../views/view');
 var elementHandlers = {
   changeContent: function(target, id) {
     target.blur(function() {
-      var content = $(this).html();
+      var content = $(this).text();
       //send request to change element content
       Element.edit(id, JSON.stringify({content: content}));
     });
