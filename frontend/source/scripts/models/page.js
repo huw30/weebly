@@ -1,3 +1,16 @@
+/*
+Page model. Handles all ajax calls to backend
+
+newPage: create a new page, send with page name
+and returns the page object
+
+edit: edit the page's name
+
+getAll: get all pages that is in the database (if auth is seted up, need to send with user id)
+
+deleteElement: delete an page with id
+*/
+
 var vow = require('vow');
 
 var Page = {

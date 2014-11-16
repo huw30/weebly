@@ -29,6 +29,7 @@ var dragdrop = {
     this.style.borderRadius= "5px";
     this.zIndex = '9999';
 
+    //get element's position (original) and height/width
     this.originalY = $(this).offset().top;
     this.originalX = $(this).offset().left;
     this.elHeight = $(this).outerHeight(),
@@ -40,6 +41,7 @@ var dragdrop = {
   drag: function(event) {
     this.zIndex = '9999';
     event.dataTransfer.effectAllowed  = "move";
+    //let the element move with mousemove
     $(this).offset({
       top: event.pageY + this.posY - this.elHeight,
       left: event.pageX + this.posX - this.elWidth
@@ -51,7 +53,7 @@ var dragdrop = {
     this.zIndex = '0';
     this.style.border = "none";
     this.style.borderRadius = "";
-    //go back to where it was
+    //go back to where the element was
     $(this).offset({
       top: this.originalY,
       left: this.originalX
@@ -59,6 +61,7 @@ var dragdrop = {
     event.preventDefault();
   },
   dragOver: function(event) {
+    //divider get hightlighted on hover
     $(this).children().addClass('active');
     event.preventDefault();
     return false;
@@ -71,11 +74,13 @@ var dragdrop = {
     $(this).children().removeClass('active');
     var type = event.dataTransfer.getData('type');
     var id = event.dataTransfer.getData('id');
+    //if there's an id, then it means it's an existing element
     if (id) {
       //rearrange
       $('#'+id).insertBefore($(this).parent());
       view.rearrange();
     } else {
+      //if no id, then call add new
       //add new
       var pageId = $(this).parents('.page-content').attr('id').slice(0, 24);
       view.addNew(this, pageId, type);
@@ -85,6 +90,7 @@ var dragdrop = {
   },
   elementDragStart: function(event) {
     event.dataTransfer.effectAllowed  = "move";
+    //set the element id when starting drag it
     event.dataTransfer.setData('id', $(event.target).attr('id'));
     $(event.target).css('opacity', '0.2');
   },
@@ -94,7 +100,7 @@ var dragdrop = {
   },
 
   onPageDragOver: function(event) {
-    //if usinsertElementer not hover on any of the divider then find the last divider and active it
+    //if not hover on any of the divider then find the last divider and active it
     if (!isInArray(event.target, $('.divider').toArray())) {
       $('.divider:last').children().addClass('active');
     }
@@ -104,13 +110,12 @@ var dragdrop = {
     $('.divider:last').children().removeClass('active');
   }, 
   onPageDrop: function(event) {
+    //if not drop on any of the divider, then add it underneath the lower-most already existing element
     $('.divider:last').children().removeClass('active');
     var type = event.dataTransfer.getData('type');
     var id = event.dataTransfer.getData('id');
     if (!isInArray(event.target, $('.divider').toArray())) { 
-      if (id) {
-        // view.rearrange($('.divider:last'), id);
-      } else {
+      if (!id) {
         var pageId = $(this).attr('id').slice(0, 24);
         view.addNew($('.divider:last'), pageId, type);
       }
@@ -133,25 +138,29 @@ var elementHandlers = {
   changeContent: function(target, id) {
     target.blur(function() {
       var content = $(this).html();
-      //send request to change content
+      //send request to change element content
       Element.edit(id, JSON.stringify({content: content}));
     });
   },
   dragElement: function(target) {
+    //add listeners to the existing element
     target.addEventListener('dragstart', dragdrop.elementDragStart, false);
     target.addEventListener('dragend', dragdrop.elementDragEnd, false);
   },
   deleteElement: function(target, id) {
     target.click(function() {
-      //send request to delete
+      //send request to delete the element
       var self = this;
       Element.deleteElement(id).then(function() {
+        //after the element is deleted in database, datach the DOM element
         $(self).parents('.element-divider-wrapper').detach();
+        //rearrange the element position
         view.rearrange();
       });
     });
   },
   deleteElementHover: function(target) {
+    //handles the mouse action on the element
     target.mouseover(function() {
       $(this).parent().css('border-color', '#FE6A6D');
       $(this).siblings('.icon-resize').hide();
@@ -163,6 +172,7 @@ var elementHandlers = {
     });
   },
   dropElement: function(target) {
+    //add event listener to each divider
     target.addEventListener('dragover' , dragdrop.dragOver, false);
     target.addEventListener('dragleave', dragdrop.dragLeave, false);
     target.addEventListener('drop', dragdrop.drop, false);
@@ -184,6 +194,7 @@ var pageHandlers = (function() {
       });
     },
     buttonHover: function(target) {
+      //handle button hover events
       target.hover(
         function() {
           $(this).css('border-color', '#4C657C');
@@ -214,7 +225,7 @@ var pageHandlers = (function() {
         $(this).parent().css('background-color', '#488ACD');
         $(this).attr('contenteditable', 'false');
         var newName = {name: $(this).html()};
-        //sendRequest change name
+        //sendRequest to change page name
         Page.edit(id, newName).then(function() {
           //change pageTab's name according to id
           $('#'+id+'-t').html($(self).html());
@@ -239,10 +250,14 @@ var pageHandlers = (function() {
         var self = this;
         Page.deletePage(id).then(function() {
           //then detach page button
+          var siblingPage = $(self).parent().prev()?$(self).parent().prev(): $(self).parent().next();
           $(self).parent().detach();
           $('#'+id+'-t').detach();
           $('#'+id+'-c').detach();
           //if there's another page, get that page's all elements 
+          if (siblingPage) {
+            getAllElements(siblingPage.attr('id'));
+          }
           //if not, do nothing
         });
       });
@@ -266,7 +281,10 @@ var pageHandlers = (function() {
 })();
 
 module.exports = pageHandlers;
-
+//get all elements of a page 
+//then insert a new page-content container
+//add listeners
+//and insert all elements into the container order by postion
 function getAllElements(pageId) {
   $('#'+pageId+'-t').addClass('active');
   var pageContent = templates.renderPageContent({contentId: pageId+'-c'});
@@ -282,6 +300,21 @@ function getAllElements(pageId) {
   });
 };
 },{"../components/dragdrop":3,"../models/element":6,"../models/page":7,"../views/templates":8}],6:[function(require,module,exports){
+/*
+Element model. Handles all ajax calls to backend
+
+newElement: create a new element, send with type and page that it belongs to 
+and returns the element object
+
+edit: edit the element's content, for text and title element.
+
+rearrange: this is called anytime there's a change to the element: drag below or above, 
+delete and insert new.
+
+getAll: get all elements of one page
+
+deleteElement: delete an element with id
+*/
 var vow = require('vow');
 
 var Element = {
@@ -349,6 +382,19 @@ var Element = {
 
 module.exports = Element;
 },{"vow":11}],7:[function(require,module,exports){
+/*
+Page model. Handles all ajax calls to backend
+
+newPage: create a new page, send with page name
+and returns the page object
+
+edit: edit the page's name
+
+getAll: get all pages that is in the database (if auth is seted up, need to send with user id)
+
+deleteElement: delete an page with id
+*/
+
 var vow = require('vow');
 
 var Page = {

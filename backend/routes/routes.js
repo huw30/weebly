@@ -1,3 +1,6 @@
+/*
+Primary routing system. See README.md for reference.
+*/
 var Page = require('../models/page');
 var Element = require('../models/element');
 var vow = require('vow');

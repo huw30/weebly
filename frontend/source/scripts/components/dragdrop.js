@@ -12,6 +12,7 @@ var dragdrop = {
     this.style.borderRadius= "5px";
     this.zIndex = '9999';
 
+    //get element's position (original) and height/width
     this.originalY = $(this).offset().top;
     this.originalX = $(this).offset().left;
     this.elHeight = $(this).outerHeight(),
@@ -23,6 +24,7 @@ var dragdrop = {
   drag: function(event) {
     this.zIndex = '9999';
     event.dataTransfer.effectAllowed  = "move";
+    //let the element move with mousemove
     $(this).offset({
       top: event.pageY + this.posY - this.elHeight,
       left: event.pageX + this.posX - this.elWidth
@@ -34,7 +36,7 @@ var dragdrop = {
     this.zIndex = '0';
     this.style.border = "none";
     this.style.borderRadius = "";
-    //go back to where it was
+    //go back to where the element was
     $(this).offset({
       top: this.originalY,
       left: this.originalX
@@ -42,6 +44,7 @@ var dragdrop = {
     event.preventDefault();
   },
   dragOver: function(event) {
+    //divider get hightlighted on hover
     $(this).children().addClass('active');
     event.preventDefault();
     return false;
@@ -54,11 +57,13 @@ var dragdrop = {
     $(this).children().removeClass('active');
     var type = event.dataTransfer.getData('type');
     var id = event.dataTransfer.getData('id');
+    //if there's an id, then it means it's an existing element
     if (id) {
       //rearrange
       $('#'+id).insertBefore($(this).parent());
       view.rearrange();
     } else {
+      //if no id, then call add new
       //add new
       var pageId = $(this).parents('.page-content').attr('id').slice(0, 24);
       view.addNew(this, pageId, type);
@@ -68,6 +73,7 @@ var dragdrop = {
   },
   elementDragStart: function(event) {
     event.dataTransfer.effectAllowed  = "move";
+    //set the element id when starting drag it
     event.dataTransfer.setData('id', $(event.target).attr('id'));
     $(event.target).css('opacity', '0.2');
   },
@@ -77,7 +83,7 @@ var dragdrop = {
   },
 
   onPageDragOver: function(event) {
-    //if usinsertElementer not hover on any of the divider then find the last divider and active it
+    //if not hover on any of the divider then find the last divider and active it
     if (!isInArray(event.target, $('.divider').toArray())) {
       $('.divider:last').children().addClass('active');
     }
@@ -87,13 +93,12 @@ var dragdrop = {
     $('.divider:last').children().removeClass('active');
   }, 
   onPageDrop: function(event) {
+    //if not drop on any of the divider, then add it underneath the lower-most already existing element
     $('.divider:last').children().removeClass('active');
     var type = event.dataTransfer.getData('type');
     var id = event.dataTransfer.getData('id');
     if (!isInArray(event.target, $('.divider').toArray())) { 
-      if (id) {
-        // view.rearrange($('.divider:last'), id);
-      } else {
+      if (!id) {
         var pageId = $(this).attr('id').slice(0, 24);
         view.addNew($('.divider:last'), pageId, type);
       }

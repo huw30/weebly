@@ -1,3 +1,11 @@
+/*
+  Element Object Data Access Layer. 
+  Handles: 1. create new element
+           2. get all elements
+           3. update an element's position
+           4. update an element's content
+           5. remove a page
+*/
 var mongodb = require('mongodb').Db;
 var ObjectID = require('mongodb').ObjectID;
 var vow = require('vow');

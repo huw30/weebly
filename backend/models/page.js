@@ -1,3 +1,10 @@
+/*
+  Page Object Data Access Layer. 
+  Handles: 1. create new page
+           2. get all pages
+           3. update a page name
+           4. remove a page
+*/
 var mongodb = require('mongodb').Db;
 var ObjectID = require('mongodb').ObjectID;
 var vow = require('vow');
@@ -36,34 +43,6 @@ Page.prototype.save = function() {
   });
   return deferred.promise();
 };
-
-// Page.getOne = function(id) {
-//   var deferred = vow.defer();
-
-//   mongodb.connect(settings.url, function(err, db) {
-//     if (err) {
-//       db.close();
-//       deferred.reject(err);
-//     }
-//     db.collection('pages',function(err, collection) {
-//       if (err) {
-//         db.close();
-//         deferred.reject(err);
-//       }
-//       collection.findOne({
-//         _id: id
-//       }, function(err, page) {
-//         db.close();
-//         if (err) {
-//           deferred.reject(err);
-//         }
-//         deferred.resolve(page);
-//       });
-//     });
-//   });
-
-//   return deferred.promise();
-// };
 
 Page.getAll = function() {
   var deferred = vow.defer();

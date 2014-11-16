@@ -270,7 +270,7 @@
     .page-content .element-wrapper-image > span.icon-resize-rotate {
       visibility: hidden;
       position: absolute;
-      left: 45%;
+      left: 50%;
       bottom: -23px;
       cursor: move; }
   .page-content .element-wrapper-text {
@@ -322,7 +322,7 @@
     .page-content .element-wrapper-text > span.icon-resize-rotate {
       visibility: hidden;
       position: absolute;
-      left: 45%;
+      left: 50%;
       bottom: -23px;
       cursor: move; }
 

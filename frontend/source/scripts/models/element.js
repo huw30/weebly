@@ -1,3 +1,18 @@
+/*
+Element model. Handles all ajax calls to backend
+
+newElement: create a new element, send with type and page that it belongs to 
+and returns the element object
+
+edit: edit the element's content, for text and title element.
+
+rearrange: this is called anytime there's a change to the element: drag below or above, 
+delete and insert new.
+
+getAll: get all elements of one page
+
+deleteElement: delete an element with id
+*/
 var vow = require('vow');
 
 var Element = {

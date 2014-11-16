@@ -11,6 +11,7 @@ var pageHandlers = (function() {
       });
     },
     buttonHover: function(target) {
+      //handle button hover events
       target.hover(
         function() {
           $(this).css('border-color', '#4C657C');
@@ -41,7 +42,7 @@ var pageHandlers = (function() {
         $(this).parent().css('background-color', '#488ACD');
         $(this).attr('contenteditable', 'false');
         var newName = {name: $(this).html()};
-        //sendRequest change name
+        //sendRequest to change page name
         Page.edit(id, newName).then(function() {
           //change pageTab's name according to id
           $('#'+id+'-t').html($(self).html());
@@ -66,10 +67,14 @@ var pageHandlers = (function() {
         var self = this;
         Page.deletePage(id).then(function() {
           //then detach page button
+          var siblingPage = $(self).parent().prev()?$(self).parent().prev(): $(self).parent().next();
           $(self).parent().detach();
           $('#'+id+'-t').detach();
           $('#'+id+'-c').detach();
           //if there's another page, get that page's all elements 
+          if (siblingPage) {
+            getAllElements(siblingPage.attr('id'));
+          }
           //if not, do nothing
         });
       });
@@ -93,7 +98,10 @@ var pageHandlers = (function() {
 })();
 
 module.exports = pageHandlers;
-
+//get all elements of a page 
+//then insert a new page-content container
+//add listeners
+//and insert all elements into the container order by postion
 function getAllElements(pageId) {
   $('#'+pageId+'-t').addClass('active');
   var pageContent = templates.renderPageContent({contentId: pageId+'-c'});
