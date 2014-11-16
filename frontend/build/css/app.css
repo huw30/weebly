@@ -333,8 +333,8 @@
   .element-wrapper-title .element-title {
     display: inline-block;
     width: 100%;
-    padding: 23px 22px;
-    min-height: 75px;
+    padding: 5px 22px;
+    min-height: 40px;
     font-family: 'ProximaNova-Reg', sans-serif;
     color: #4C657C;
     font-size: 30px;
