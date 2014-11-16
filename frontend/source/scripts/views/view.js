@@ -33,6 +33,8 @@ module.exports.init = function() {
       // get all elements of first tab
       pageHandlers.getAllElements(id);
     }
+  }).fail(function(err) {
+    console.log(err);
   });
 };
 
@@ -51,6 +53,8 @@ module.exports.addNew = function(place, page, type) {
     //insert before place
     el.insertBefore($(place).parent());
     elementRearrage();
+  }).fail(function(err) {
+    console.log(err);
   });
 }
 
@@ -64,6 +68,8 @@ function createNewPage(target) {
       //insert into dom
       insertPage(page);
       $(self).siblings('.edit-page').html('');
+    }).fail(function(err) {
+      console.log(err);
     });
   });
 };

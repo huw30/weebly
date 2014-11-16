@@ -24,6 +24,8 @@ var elementHandlers = {
         $(self).parents('.element-divider-wrapper').detach();
         //rearrange the element position
         view.rearrange();
+      }).fail(function(err) {
+        console.log(err);
       });
     });
   },

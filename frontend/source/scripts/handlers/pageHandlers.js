@@ -46,7 +46,9 @@ var pageHandlers = (function() {
         Page.edit(id, newName).then(function() {
           //change pageTab's name according to id
           $('#'+id+'-t').html($(self).html());
-        })
+        }).fail(function(err) {
+          console.log(err);
+        });
       });
     },
     deletePageHover: function(target) {
@@ -76,6 +78,8 @@ var pageHandlers = (function() {
             getAllElements(siblingPage.attr('id'));
           }
           //if not, do nothing
+        }).fail(function(err) {
+          console.log(err);
         });
       });
     },
@@ -114,5 +118,7 @@ function getAllElements(pageId) {
       var el = templates.renderElement(element);
       el.insertBefore($('#default'));
     });
+  }).fail(function(err) {
+    console.log(err);
   });
 };
