@@ -22,6 +22,7 @@ app.configure(function() {
 
   app.use(app.router);
   app.use(express.static(__dirname + '/public/' ));
+  app.use(express.favicon(__dirname + '/public/images/favicon.ico'));
   app.use('/', express.static(__dirname + '/frontend/build' ));
   app.use(index);
   routes(app);
