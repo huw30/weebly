@@ -5,6 +5,7 @@ var elementHandlers = require('../handlers/elementHandlers');
 var handlebars = {
   text: JST['frontend/source/templates/element-text.hbs'],
   image: JST['frontend/source/templates/element-image.hbs'],
+  title: JST['frontend/source/templates/element-title.hbs'],
   pageButton: JST['frontend/source/templates/page-button.hbs'],
   pageTab: JST['frontend/source/templates/page-tab.hbs'],
   pageContent: JST['frontend/source/templates/page-content.hbs']
@@ -33,6 +34,9 @@ module.exports.renderElement = function(data) {
     elementHandlers.changeContent(element.find('.element-text'), data._id);
   } else if (data.type === 'image') {
     element = $(handlebars.image(data));
+  } else if (data.type === 'title') {
+    element = $(handlebars.title(data));
+    elementHandlers.changeContent(element.find('.element-title'), data._id);
   }
   elementHandlers.deleteElementHover(element.find('.icon-delete'));
   elementHandlers.deleteElement(element.find('.icon-delete'), data._id);

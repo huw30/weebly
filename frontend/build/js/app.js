@@ -156,6 +156,8 @@ var elementHandlers = {
         $(self).parents('.element-divider-wrapper').detach();
         //rearrange the element position
         view.rearrange();
+      }).fail(function(err) {
+        console.log(err);
       });
     });
   },
@@ -229,7 +231,9 @@ var pageHandlers = (function() {
         Page.edit(id, newName).then(function() {
           //change pageTab's name according to id
           $('#'+id+'-t').html($(self).html());
-        })
+        }).fail(function(err) {
+          console.log(err);
+        });
       });
     },
     deletePageHover: function(target) {
@@ -259,6 +263,8 @@ var pageHandlers = (function() {
             getAllElements(siblingPage.attr('id'));
           }
           //if not, do nothing
+        }).fail(function(err) {
+          console.log(err);
         });
       });
     },
@@ -297,6 +303,8 @@ function getAllElements(pageId) {
       var el = templates.renderElement(element);
       el.insertBefore($('#default'));
     });
+  }).fail(function(err) {
+    console.log(err);
   });
 };
 },{"../components/dragdrop":3,"../models/element":6,"../models/page":7,"../views/templates":8}],6:[function(require,module,exports){
@@ -459,6 +467,7 @@ var elementHandlers = require('../handlers/elementHandlers');
 var handlebars = {
   text: JST['frontend/source/templates/element-text.hbs'],
   image: JST['frontend/source/templates/element-image.hbs'],
+  title: JST['frontend/source/templates/element-title.hbs'],
   pageButton: JST['frontend/source/templates/page-button.hbs'],
   pageTab: JST['frontend/source/templates/page-tab.hbs'],
   pageContent: JST['frontend/source/templates/page-content.hbs']
@@ -487,6 +496,9 @@ module.exports.renderElement = function(data) {
     elementHandlers.changeContent(element.find('.element-text'), data._id);
   } else if (data.type === 'image') {
     element = $(handlebars.image(data));
+  } else if (data.type === 'title') {
+    element = $(handlebars.title(data));
+    elementHandlers.changeContent(element.find('.element-title'), data._id);
   }
   elementHandlers.deleteElementHover(element.find('.icon-delete'));
   elementHandlers.deleteElement(element.find('.icon-delete'), data._id);
@@ -536,6 +548,8 @@ module.exports.init = function() {
       // get all elements of first tab
       pageHandlers.getAllElements(id);
     }
+  }).fail(function(err) {
+    console.log(err);
   });
 };
 
@@ -554,6 +568,8 @@ module.exports.addNew = function(place, page, type) {
     //insert before place
     el.insertBefore($(place).parent());
     elementRearrage();
+  }).fail(function(err) {
+    console.log(err);
   });
 }
 
@@ -567,6 +583,8 @@ function createNewPage(target) {
       //insert into dom
       insertPage(page);
       $(self).siblings('.edit-page').html('');
+    }).fail(function(err) {
+      console.log(err);
     });
   });
 };

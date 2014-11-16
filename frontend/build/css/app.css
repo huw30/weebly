@@ -221,110 +221,153 @@
 .page-content {
   width: 100%;
   height: 100%; }
-  .page-content .element-wrapper-image {
-    position: relative;
-    margin: 0 22px; }
-    .page-content .element-wrapper-image .element-image {
-      display: inline-block;
-      width: 100%;
-      height: 285px;
-      padding: 72px;
-      background-color: #EFF2F5;
-      border: 2px solid #BECCD9;
-      border-radius: 5px;
-      text-align: center; }
-      .page-content .element-wrapper-image .element-image .add-image-text {
-        display: block;
-        font-family: 'ProximaNova-Reg', sans-serif;
-        color: #BECCD9;
-        font-size: 13px; }
-        .page-content .element-wrapper-image .element-image .add-image-text span {
-          font-size: 19px;
-          vertical-align: middle;
-          margin-left: 5px; }
-    .page-content .element-wrapper-image:hover, .page-content .element-wrapper-image:focus {
-      border-radius: 7px;
-      border: 2px solid #87C5FF; }
-      .page-content .element-wrapper-image:hover .element-image, .page-content .element-wrapper-image:focus .element-image {
-        border: none; }
-      .page-content .element-wrapper-image:hover span.icon-delete, .page-content .element-wrapper-image:hover span.icon-resize, .page-content .element-wrapper-image:hover span.icon-resize-rotate, .page-content .element-wrapper-image:focus span.icon-delete, .page-content .element-wrapper-image:focus span.icon-resize, .page-content .element-wrapper-image:focus span.icon-resize-rotate {
-        visibility: visible; }
-    .page-content .element-wrapper-image > span.icon-delete {
-      visibility: hidden;
-      position: absolute;
-      top: -2px;
-      right: -2px;
-      cursor: pointer; }
-    .page-content .element-wrapper-image > span:nth-child(2) {
-      visibility: hidden;
-      position: absolute;
-      top: 45%;
-      left: -5px;
-      cursor: move; }
-    .page-content .element-wrapper-image > span:nth-child(3) {
-      visibility: hidden;
-      position: absolute;
-      top: 45%;
-      right: -5px;
-      cursor: move; }
-    .page-content .element-wrapper-image > span.icon-resize-rotate {
-      visibility: hidden;
-      position: absolute;
-      left: 50%;
-      bottom: -23px;
-      cursor: move; }
-  .page-content .element-wrapper-text {
-    position: relative; }
-    .page-content .element-wrapper-text .element-text {
-      display: inline-block;
-      width: 100%;
-      padding: 23px 22px;
-      min-height: 150px;
+
+.element-wrapper-image {
+  position: relative;
+  margin: 0 22px; }
+  .element-wrapper-image .element-image {
+    display: inline-block;
+    width: 100%;
+    height: 285px;
+    padding: 72px;
+    background-color: #EFF2F5;
+    border: 2px solid #BECCD9;
+    border-radius: 5px;
+    text-align: center; }
+    .element-wrapper-image .element-image .add-image-text {
+      display: block;
       font-family: 'ProximaNova-Reg', sans-serif;
-      color: #4C657C;
-      font-size: 14px;
-      text-align: justify;
-      line-height: 25px;
-      letter-spacing: 0.3px;
-      outline: none; }
-    .page-content .element-wrapper-text:hover, .page-content .element-wrapper-text:focus {
-      border-radius: 7px;
-      border: 2px solid #87C5FF; }
-      .page-content .element-wrapper-text:hover span.icon-delete, .page-content .element-wrapper-text:hover span.icon-resize, .page-content .element-wrapper-text:hover span.icon-resize-rotate, .page-content .element-wrapper-text:focus span.icon-delete, .page-content .element-wrapper-text:focus span.icon-resize, .page-content .element-wrapper-text:focus span.icon-resize-rotate {
-        visibility: visible; }
-    .page-content .element-wrapper-text [contentEditable=true] {
-      -webkit-user-select: text;
-         -moz-user-select: text;
-          -ms-user-select: text;
-              user-select: text; }
-    .page-content .element-wrapper-text [contentEditable=true]:empty:not(:focus):before {
-      content: attr(data-placeholder);
-      color: #4C657C;
-      font-style: italic; }
-    .page-content .element-wrapper-text > span.icon-delete {
-      visibility: hidden;
-      position: absolute;
-      top: -2px;
-      right: -2px;
-      cursor: pointer; }
-    .page-content .element-wrapper-text > span:nth-child(2) {
-      visibility: hidden;
-      position: absolute;
-      top: 45%;
-      left: -5px;
-      cursor: move; }
-    .page-content .element-wrapper-text > span:nth-child(3) {
-      visibility: hidden;
-      position: absolute;
-      top: 45%;
-      right: -5px;
-      cursor: move; }
-    .page-content .element-wrapper-text > span.icon-resize-rotate {
-      visibility: hidden;
-      position: absolute;
-      left: 50%;
-      bottom: -23px;
-      cursor: move; }
+      color: #BECCD9;
+      font-size: 13px; }
+      .element-wrapper-image .element-image .add-image-text span {
+        font-size: 19px;
+        vertical-align: middle;
+        margin-left: 5px; }
+  .element-wrapper-image:hover, .element-wrapper-image:focus {
+    border-radius: 7px;
+    border: 2px solid #87C5FF; }
+    .element-wrapper-image:hover .element-image, .element-wrapper-image:focus .element-image {
+      border: none; }
+    .element-wrapper-image:hover span.icon-delete, .element-wrapper-image:hover span.icon-resize, .element-wrapper-image:hover span.icon-resize-rotate, .element-wrapper-image:focus span.icon-delete, .element-wrapper-image:focus span.icon-resize, .element-wrapper-image:focus span.icon-resize-rotate {
+      visibility: visible; }
+  .element-wrapper-image > span.icon-delete {
+    visibility: hidden;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    cursor: pointer; }
+  .element-wrapper-image > span:nth-child(2) {
+    visibility: hidden;
+    position: absolute;
+    top: 45%;
+    left: -5px;
+    cursor: move; }
+  .element-wrapper-image > span:nth-child(3) {
+    visibility: hidden;
+    position: absolute;
+    top: 45%;
+    right: -5px;
+    cursor: move; }
+  .element-wrapper-image > span.icon-resize-rotate {
+    visibility: hidden;
+    position: absolute;
+    left: 50%;
+    bottom: -23px;
+    cursor: move; }
+
+.element-wrapper-text {
+  position: relative; }
+  .element-wrapper-text .element-text {
+    display: inline-block;
+    width: 100%;
+    padding: 23px 22px;
+    min-height: 150px;
+    font-family: 'ProximaNova-Reg', sans-serif;
+    color: #4C657C;
+    font-size: 14px;
+    text-align: justify;
+    line-height: 25px;
+    letter-spacing: 0.3px;
+    outline: none; }
+  .element-wrapper-text:hover, .element-wrapper-text:focus {
+    border-radius: 7px;
+    border: 2px solid #87C5FF; }
+    .element-wrapper-text:hover span.icon-delete, .element-wrapper-text:hover span.icon-resize, .element-wrapper-text:hover span.icon-resize-rotate, .element-wrapper-text:focus span.icon-delete, .element-wrapper-text:focus span.icon-resize, .element-wrapper-text:focus span.icon-resize-rotate {
+      visibility: visible; }
+  .element-wrapper-text [contentEditable=true] {
+    -webkit-user-select: text;
+       -moz-user-select: text;
+        -ms-user-select: text;
+            user-select: text; }
+  .element-wrapper-text [contentEditable=true]:empty:not(:focus):before {
+    content: attr(data-placeholder);
+    color: #4C657C;
+    font-style: italic; }
+  .element-wrapper-text > span.icon-delete {
+    visibility: hidden;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    cursor: pointer; }
+  .element-wrapper-text > span:nth-child(2) {
+    visibility: hidden;
+    position: absolute;
+    top: 45%;
+    left: -5px;
+    cursor: move; }
+  .element-wrapper-text > span:nth-child(3) {
+    visibility: hidden;
+    position: absolute;
+    top: 45%;
+    right: -5px;
+    cursor: move; }
+  .element-wrapper-text > span.icon-resize-rotate {
+    visibility: hidden;
+    position: absolute;
+    left: 50%;
+    bottom: -23px;
+    cursor: move; }
+
+.element-wrapper-title {
+  position: relative; }
+  .element-wrapper-title .element-title {
+    display: inline-block;
+    width: 100%;
+    padding: 23px 22px;
+    min-height: 75px;
+    font-family: 'ProximaNova-Reg', sans-serif;
+    color: #4C657C;
+    font-size: 30px;
+    text-align: left;
+    line-height: 25px;
+    letter-spacing: 0.3px;
+    outline: none; }
+  .element-wrapper-title:hover, .element-wrapper-title:focus {
+    border-radius: 7px;
+    border: 2px solid #87C5FF; }
+    .element-wrapper-title:hover span.icon-delete, .element-wrapper-title:hover span.icon-resize, .element-wrapper-title:hover span.icon-resize-rotate, .element-wrapper-title:focus span.icon-delete, .element-wrapper-title:focus span.icon-resize, .element-wrapper-title:focus span.icon-resize-rotate {
+      visibility: visible; }
+  .element-wrapper-title [contentEditable=true] {
+    -webkit-user-select: text;
+       -moz-user-select: text;
+        -ms-user-select: text;
+            user-select: text; }
+  .element-wrapper-title [contentEditable=true]:empty:not(:focus):before {
+    content: attr(data-placeholder);
+    color: #4C657C;
+    font-style: italic; }
+  .element-wrapper-title > span.icon-delete {
+    visibility: hidden;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    cursor: pointer; }
+  .element-wrapper-title > span.icon-resize-rotate {
+    visibility: hidden;
+    position: absolute;
+    left: 50%;
+    bottom: -23px;
+    cursor: move; }
 
 * {
   box-sizing: border-box; }

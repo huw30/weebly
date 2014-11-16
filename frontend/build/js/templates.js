@@ -20,6 +20,17 @@ this["JST"]["frontend/source/templates/element-text.hbs"] = Handlebars.template(
 
 
 
+this["JST"]["frontend/source/templates/element-title.hbs"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+  return "<div class=\"element-divider-wrapper\" id="
+    + escapeExpression(((helper = (helper = helpers._id || (depth0 != null ? depth0._id : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"_id","hash":{},"data":data}) : helper)))
+    + " draggable=\"true\">\n    <div class=\"divider\"><span></span></div>\n    <div class=\"element-wrapper-title\">\n        <span class=\"icon-delete\"></span>\n        <span class=\"icon-resize-rotate\"></span>\n        <div class=\"element-title\" contenteditable=\"true\" data-placeholder=\"Add Title Here\">"
+    + escapeExpression(((helper = (helper = helpers.content || (depth0 != null ? depth0.content : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"content","hash":{},"data":data}) : helper)))
+    + "</div>\n    </div>\n</div>";
+},"useData":true});
+
+
+
 this["JST"]["frontend/source/templates/page-button.hbs"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
   return "<li class=\"page\" id="

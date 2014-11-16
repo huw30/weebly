@@ -51,6 +51,7 @@ module.exports = function(app) {
   //********************************Elements**********************
 
   app.post('/element/new', function(req, res) {
+    console.log(req.body);
     var newElement = new Element(req.body.page, req.body.type, null, null);
     newElement.save().then(function(element) {
       res.send(element);

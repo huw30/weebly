@@ -1,0 +1,45 @@
+.element-wrapper-title {
+  position: relative;
+  .element-title {
+    display: inline-block;
+    width: 100%;
+    padding: 23px 22px;
+    min-height: 75px;
+    font-family: 'ProximaNova-Reg', sans-serif;
+    color: $dark-grey;
+    font-size: 30px;
+    text-align: left;
+    line-height: 25px;
+    letter-spacing: 0.3px;
+    outline: none;
+  }
+  &:hover, &:focus {
+    border-radius: 7px;
+    border: 2px solid $anakiwa;
+    span.icon-delete, span.icon-resize, span.icon-resize-rotate {
+      visibility: visible;
+    }
+  }
+  [contentEditable=true] {
+    user-select: text;
+  }
+  [contentEditable=true]:empty:not(:focus):before{
+    content: attr(data-placeholder);
+    color: $dark-grey;
+    font-style: italic;
+  }
+  >span.icon-delete {
+    visibility: hidden;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    cursor: pointer;
+  }
+  >span.icon-resize-rotate {
+    visibility: hidden;
+    position: absolute;
+    left: 50%;
+    bottom: -23px;
+    cursor: move;
+  }
+}
