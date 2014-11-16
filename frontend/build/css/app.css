@@ -339,8 +339,6 @@
     color: #4C657C;
     font-size: 30px;
     text-align: left;
-    line-height: 25px;
-    letter-spacing: 0.3px;
     outline: none; }
   .element-wrapper-title:hover, .element-wrapper-title:focus {
     border-radius: 7px;
