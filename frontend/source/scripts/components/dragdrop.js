@@ -8,7 +8,9 @@ var dragdrop = {
     event.dataTransfer.setData('type', type);
     // this.style.boxShadow = "0px 8px 18px 3px rgba(155,157,155,1)";  //not working, no idea why
     this.style.border = "1px solid #74777B";
-    this.style.borderRadius = "5px";
+    this.style.backgroundColor = "transparent";
+    this.style.borderRadius= "5px";
+    this.zIndex = '9999';
 
     this.originalY = $(this).offset().top;
     this.originalX = $(this).offset().left;
@@ -19,6 +21,7 @@ var dragdrop = {
   },
 
   drag: function(event) {
+    this.zIndex = '9999';
     event.dataTransfer.effectAllowed  = "move";
     $(this).offset({
       top: event.pageY + this.posY - this.elHeight,
@@ -28,6 +31,7 @@ var dragdrop = {
   },
 
   dragEnd: function(event) {
+    this.zIndex = '0';
     this.style.border = "none";
     this.style.borderRadius = "";
     //go back to where it was
@@ -52,7 +56,8 @@ var dragdrop = {
     var id = event.dataTransfer.getData('id');
     if (id) {
       //rearrange
-      view.rearrange(this, id);
+      $('#'+id).insertBefore($(this).parent());
+      view.rearrange();
     } else {
       //add new
       var pageId = $(this).parents('.page-content').attr('id').slice(0, 24);
@@ -64,10 +69,10 @@ var dragdrop = {
   elementDragStart: function(event) {
     event.dataTransfer.effectAllowed  = "move";
     event.dataTransfer.setData('id', $(event.target).attr('id'));
-    $(event.target).children('.element-wrapper').css('opacity', '0.2');
+    $(event.target).css('opacity', '0.2');
   },
   elementDragEnd: function(event) {
-    $(event.target).children('.element-wrapper').css('opacity', '1');
+    $(event.target).css('opacity', '1');
     event.preventDefault();
   },
 
@@ -87,7 +92,7 @@ var dragdrop = {
     var id = event.dataTransfer.getData('id');
     if (!isInArray(event.target, $('.divider').toArray())) { 
       if (id) {
-        view.rearrange($('.divider:last'), id);
+        // view.rearrange($('.divider:last'), id);
       } else {
         var pageId = $(this).attr('id').slice(0, 24);
         view.addNew($('.divider:last'), pageId, type);

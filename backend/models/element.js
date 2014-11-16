@@ -43,34 +43,6 @@ Element.prototype.save = function() {
   return deferred.promise();
 };
 
-// Element.getOne = function(id) {
-//   var deferred = vow.defer();
-
-//   mongodb.connect(settings.url, function(err, db) {
-//     if (err) {
-//       db.close();
-//       deferred.reject(err);
-//     }
-//     db.collection('elements',function(err, collection) {
-//       if (err) {
-//         db.close();
-//         deferred.reject(err);
-//       }
-//       collection.findOne({
-//         _id: id
-//       }, function(err, element) {
-//         db.close();
-//         if (err) {
-//           deferred.reject(err);
-//         }
-//         deferred.resolve(element);
-//       });
-//     });
-//   });
-
-//   return deferred.promise();
-// }
-
 Element.getAll = function(pageId) {
   var deferred = vow.defer();
 
@@ -87,7 +59,7 @@ Element.getAll = function(pageId) {
       collection.find({
         page: pageId
       }).sort({
-        position:1
+        position: 1
       }).toArray(function(err, elements) {
         db.close();
         if (err) {

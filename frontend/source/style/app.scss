@@ -90,6 +90,8 @@ ul {
     border-radius: 5px;
     font-size: 13px;
     color: white;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
     div {
       display: inline-block;
       outline: none;
@@ -149,12 +151,12 @@ ul {
     padding: 18px;
     float: left;
     text-align: center;
+    // background-color: transparent;
     &:hover {
-      // background-color: $fiord;
+      background-color: $pickled-bluewood;
       cursor: move;
     }
     span:nth-child(1) {
-      z-index: 9999;
       position: relative;
     }
     span:nth-child(2) {

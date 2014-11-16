@@ -1,5 +1,6 @@
 var dragdrop = require('../components/dragdrop');
 var Element = require('../models/element');
+var view = require('../views/view');
 
 var elementHandlers = {
   changeContent: function(target, id) {
@@ -16,20 +17,20 @@ var elementHandlers = {
   deleteElement: function(target, id) {
     target.click(function() {
       //send request to delete
-      console.log(id);
       var self = this;
       Element.deleteElement(id).then(function() {
         $(self).parents('.element-divider-wrapper').detach();
+        view.rearrange();
       });
     });
   },
   deleteElementHover: function(target) {
     target.mouseover(function() {
-      $(this).parents('.element-wrapper').css('border-color', '#FE6A6D');
+      $(this).parent().css('border-color', '#FE6A6D');
       $(this).siblings('.icon-resize').hide();
       $(this).siblings('.icon-resize-rotate').hide();
     }).mouseleave(function() {
-      $(this).parents('.element-wrapper').css('border-color', '#87C5FF');
+      $(this).parent().css('border-color', '#87C5FF');
       $(this).siblings('.icon-resize').show();
       $(this).siblings('.icon-resize-rotate').show();
     });

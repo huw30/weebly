@@ -12,6 +12,26 @@ Day 3: Built data store model. Use Mongo DB as database.
 
 Day 4: Finished basic styling. Top bar, sidebar and page container.
 
+Day 5 - Day 10: Javascript front-end development. There were several times structure reframing. Finally got to an MVC structure.
+
+Day 11 - Day 13: Finished the backend data persistance. 
+
+####Installation
+
+Clone this repo:
+
+`git clone https://github.com/huw30/weebly-project.git`
+
+and then do
+
+`npm install && bower install`
+
+and then
+
+`grunt`
+
+Finally, do `node server`
+
 
 ####Server Specification
 
@@ -19,17 +39,17 @@ All requests must return valid JSON in the following protocol.
 
 #####Elements: 
  
- `GET /elements/:page`   
+ `GET /elements/:id`   
  
  Response: 
  
- `order by 'order'`
+ `order by 'position'`
  
  ```JSON
 {
-  "{elements}": [
+  [
     {
-      "id":"{elementId}",
+      "_id":"{elementId}",
       "property":"{element property}",
       "...": "..."
     },

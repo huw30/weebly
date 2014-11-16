@@ -26,12 +26,17 @@ var Element = {
     });
     return deferred.promise();
   },
-  getOne: function(id) {
-    $.getJSON('/page/' + id, function(data) {
-      return data;
+  rearrange: function(array) {
+    var deferred = vow.defer();
+    var payload = {
+      elements: array
+    }
+    $.post('/elements', payload, function(data) {
+      deferred.resolve(data);
     }).fail(function(err) {
-      console.log(err);
+      deferred.reject(err);
     });
+    return deferred.promise();
   },
   getAll: function(id) {
     var deferred = vow.defer();

@@ -1,5 +1,6 @@
 var Page = require('../models/page');
 var Element = require('../models/element');
+var vow = require('vow');
 
 module.exports = function(app) {
   app.post('/page/new', function(req, res) {
@@ -12,17 +13,6 @@ module.exports = function(app) {
       res.send(err);
     });
   });
-
-  // app.get('/page/:id', function(req, res) {
-  //   var pageId = req.params.id;
-  //   Page.getOne(pageId).then(function(page) {
-  //     page.tabId = page._id+'-t';
-  //     page.contentId = page._id+'-c';
-  //     res.send(page);
-  //   }).fail(function(err) {
-  //     res.send(err);
-  //   });
-  // });
 
   app.post('/page/:id', function(req, res) {
     var pageId = req.params.id;
@@ -75,23 +65,21 @@ module.exports = function(app) {
     });
   });
 
-  // app.get('/element/:id', function(req, res) {
-  //   var elementId = req.params.id;
-  //   Element.getOne(elementId).then(function(element) {
-  //     res.send(element);
-  //   }).fail(function(err) {
-  //     res.send(err);
-  //   });
-  // });
 
-  app.put('/elements', function(req, res) {
-    // var pageId = req.params.id;
-    // var pageName = req.body.name;
-    // Page.update(pageId, pageName).then(function() {
-    //   res.send({success: true});
-    // }).fail(function(err) {
-    //   res.send(err);
-    // });
+  app.post('/elements', function(req, res) {
+    var elements = req.body.elements;
+    elements.pop();
+    var vows = [];
+
+    elements.forEach(function(element, index) {
+      vows.push(Element.updatePosition(element, index));
+    });
+
+    vow.all(vows).then(function() {
+      res.send({success: true});
+    }).fail(function(err) {
+      res.send(err);
+    });
   });
   
   app.put('/element/:id', function(req, res) {

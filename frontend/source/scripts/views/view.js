@@ -3,10 +3,18 @@ var Page = require('../models/page');
 var Element = require('../models/element');
 var templates = require('../views/templates');
 var dragdrop = require('../components/dragdrop');
+var pageHandlers = require('../handlers/pageHandlers');
+
 
 module.exports.init = function() {
   //add new page handler
   createNewPage($('.icon-add'));
+  pageHandlers.clickToggle($('.setting .icon-toggle-off'));
+  $('.sidebar').mouseover(function() {
+    $('.view-container').addClass('active');
+  }).mouseleave(function() {
+    $('.view-container').removeClass('active');
+  });
 
   //init drag items
   $('.element-item span:first-of-type').each(function() {
@@ -22,18 +30,14 @@ module.exports.init = function() {
         insertPage(page);
       });
       var id = $('.page-list li:first-of-type').attr('id');
-      //get all elements of first tab
-      getAllElements(id);
+      // get all elements of first tab
+      pageHandlers.getAllElements(id);
     }
   });
 };
 
-module.exports.rearrange = function(place, id) {
-    console.log('hey');
-    //findAllElement
-    //send request to rearrange [get all id] //need test 
-    //then
-    // $('#'+id).insertBefore($(place).parent());
+module.exports.rearrange = function() {
+  elementRearrage();
 },
 module.exports.addNew = function(place, page, type) {
   var sendElement = {
@@ -46,6 +50,7 @@ module.exports.addNew = function(place, page, type) {
     var el = templates.renderElement(element);
     //insert before place
     el.insertBefore($(place).parent());
+    elementRearrage();
   });
 }
 
@@ -70,19 +75,12 @@ function insertPage(page) {
   $('.page-tab').append(pageTab);
 };
 
-function getAllElements(pageId) {
-  $('#'+pageId+'-t').addClass('active');
-  var pageContent = templates.renderPageContent({contentId: pageId+'-c'});
-  pageContent[0].addEventListener('dragover' , dragdrop.onPageDragOver, false);
-  pageContent[0].addEventListener('dragleave', dragdrop.onPageDragLeave, false);
-  pageContent[0].addEventListener('drop', dragdrop.onPageDrop, false);
-  $('.view-container').append(pageContent);
-  Element.getAll(pageId).then(function(elements){
-    elements.forEach(function(element) {
-      var el = templates.renderElement(element);
-      el.insertBefore($('#default'));
-    });
+function elementRearrage() {
+  var elementArray = [];
+  $('.element-divider-wrapper').each(function() {
+    elementArray.push($(this).attr('id'));
   });
-};
+  Element.rearrange(elementArray);
+}
 
 

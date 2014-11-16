@@ -22,7 +22,7 @@ module.exports.renderPageButton = function(page) {
 
 module.exports.renderPageTab = function(page) {
   var pageTab = $(handlebars.pageTab(page));
-  pageHandlers.requestElements(pageTab);
+  pageHandlers.requestElements(pageTab, page._id);
   return pageTab;
 };
 

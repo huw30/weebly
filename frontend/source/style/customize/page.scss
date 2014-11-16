@@ -4,20 +4,27 @@
   left: 234px;
   bottom: 0;
   right: 0;
-  padding: 42px 72px 50px;
+  padding: 42px 50px 50px;
   border: 1px solid white;
   border-top-left-radius: 2px;
   background-color: white;
   box-shadow: -1px 0px 10px 0px rgba(28,45,59,1);
   z-index: 1;
   overflow: scroll;
+  transition: all 0.3s ease-in-out;
+  @media (max-width: 991px) {
+    left: 30px;
+  }
+  &.active {
+    left: 234px;
+  }
 }
 
 .divider {
   position: relative;
   width: 100%;
   height: 40px;
-  padding: 3px 0;
+  padding: 7px 0;
   span.active {
     display: inline-block;
     width: 100%;
@@ -26,6 +33,7 @@
 }
 
 .page-tab {
+  margin: 0 22px;
   li {
     display: inline-block;
     margin-right: 10px;
@@ -40,6 +48,7 @@
     font-family: 'ProximaNova-Reg', sans-serif;
     font-size: 14px;
     color: $nepal;
+    cursor: pointer;
     &.active {
       color: white;
       border: 2px solid $bali-hai;
@@ -51,8 +60,9 @@
 .page-content {
   width: 100%;
   height: 100%;
-  .element-wrapper {
+  .element-wrapper-image {
     position: relative;
+    margin: 0 22px;
     .element-image {
       display: inline-block;
       width: 100%;
@@ -74,11 +84,53 @@
         }
       }
     }
+    &:hover, &:focus {
+      border-radius: 7px;
+      border: 2px solid $anakiwa;
+      .element-image {
+        border: none;
+      }
+      span.icon-delete, span.icon-resize, span.icon-resize-rotate {
+        visibility: visible;
+      }
+    }
+    >span.icon-delete {
+      visibility: hidden;
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      cursor: pointer;
+    }
+
+    >span:nth-child(2) {
+      visibility: hidden;
+      position: absolute;
+      top: 45%;
+      left: -5px;
+      cursor: move;
+    }
+    >span:nth-child(3) {
+      visibility: hidden;
+      position: absolute;
+      top: 45%;
+      right: -5px;
+      cursor: move;
+    }
+    >span.icon-resize-rotate {
+      visibility: hidden;
+      position: absolute;
+      left: 45%;
+      bottom: -23px;
+      cursor: move;
+    }
+  }
+  .element-wrapper-text {
+    position: relative;
     .element-text {
       display: inline-block;
       width: 100%;
+      padding: 23px 22px;
       min-height: 150px;
-      padding: 15px 0;
       font-family: 'ProximaNova-Reg', sans-serif;
       color: $dark-grey;
       font-size: 14px;
@@ -90,14 +142,13 @@
     &:hover, &:focus {
       border-radius: 7px;
       border: 2px solid $anakiwa;
-      .element-image {
-        border: none;
-      }
       span.icon-delete, span.icon-resize, span.icon-resize-rotate {
         visibility: visible;
       }
     }
-
+    [contentEditable=true] {
+      user-select: text;
+    }
     [contentEditable=true]:empty:not(:focus):before{
       content: attr(data-placeholder);
       color: $dark-grey;
