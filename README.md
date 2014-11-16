@@ -33,7 +33,7 @@ and then
 Finally, do `node server`
 
 ####Front-End structure
-
+![structure](https://github.com/huw30/weebly-project/blob/master/public/images/structure.png "Logo Title Text 1")
 
 ####Server Specification
 
