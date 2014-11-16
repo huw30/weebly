@@ -33,5 +33,18 @@ and then
 Finally, do `node server`
 
 
+####Server Specification
+
+######Page
+
+`POST /page/new`
+
+Request Body: 
+`{name: 'name'}` 
+Response: 
+
+
+
+
 
  
