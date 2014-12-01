@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link href="css/app.css" type="text/css" rel="stylesheet" />
+    <link rel="shortcut icon" href="http://miniweebly.herokuapp.com/favicon.ico" />
+    <title>Mini Weebly</title>
+</head>
+<body>
+    <div class="topbar">
+        <div class="logo"><span class="icon-logo"></span></div>
+    </div>
+    <div class="sidebar">
+        <ul class="sidebar-content">
+            <li class="section">
+                <span class="section-header">TEMPLATES</span>
+                <ul class="page-list">
+                    <li class="add-page">
+                        <div class="edit-page" contenteditable="true" data-placeholder="ADD NEW PAGE"></div>
+                        <span class="icon-add"></span>
+                    </li>
+                </ul>
+            </li>
+            <li class="section">
+                <span class="section-header">ELEMENTS</span>
+                <ul class="element-list">
+                    <li class="element-item">
+                        <span class="icon-title" draggable="true"></span>
+                        <span class="sidebar-text">TITLE</span>
+                    </li>
+                    <li class="element-item">
+                        <span class="icon-text" draggable="true"></span>
+                        <span class="sidebar-text">TEXT</span>
+                    </li>
+                    <li class="element-item">
+                        <span class="icon-image" draggable="true"></span>
+                        <span class="sidebar-text">IMAGE</span>
+                    </li>
+                    <li class="element-item">
+                        <span class="icon-nav" draggable="true"></span>
+                        <span class="sidebar-text">NAV</span>
+                    </li>
+                </ul>
+            </li>
+            <li class="section">
+                <span class="section-header">SETTINGS</span>
+                <ul class="setting">
+                    <li>
+                        <span class="sidebar-text">SITE GRID</span>
+                        <span class="icon-toggle-off"></span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="view-container">
+        <ul class="page-tab">
+        </ul>
+    </div>
+
+    <script src="js/libs.js"></script>
+    <script src='js/templates.js'></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

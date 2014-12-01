@@ -1,0 +1,73 @@
+/*
+Icon classes can be used entirely standalone. They are named after their original file names.
+
+```html
+<i class="icon-home"></i>
+```
+*/
+.icon-Add-Delete-Edit-Icons {
+  background-image: url(../img/spritesheet.png);
+  background-position: 0px -218px;
+  width: 79px;
+  height: 78px;
+}
+.icon-Add-Delete-Edit-Icons@2x {
+  background-image: url(../img/spritesheet.png);
+  background-position: 0px -662px;
+  width: 158px;
+  height: 156px;
+}
+.icon-Delete-Element {
+  background-image: url(../img/spritesheet.png);
+  background-position: 0px -89px;
+  width: 101px;
+  height: 58px;
+}
+.icon-Element-Icons {
+  background-image: url(../img/spritesheet.png);
+  background-position: 0px -147px;
+  width: 232px;
+  height: 71px;
+}
+.icon-Element-Icons@2x {
+  background-image: url(../img/spritesheet.png);
+  background-position: 0px -520px;
+  width: 464px;
+  height: 142px;
+}
+.icon-Image-Placeholder {
+  background-image: url(../img/spritesheet.png);
+  background-position: 0px -382px;
+  width: 138px;
+  height: 138px;
+}
+.icon-Image-Placeholder@2x {
+  background-image: url(../img/spritesheet.png);
+  background-position: 0px -990px;
+  width: 276px;
+  height: 276px;
+}
+.icon-Resize-Bar {
+  background-image: url(../img/spritesheet.png);
+  background-position: 0px -39px;
+  width: 16px;
+  height: 50px;
+}
+.icon-Toggle-Switch {
+  background-image: url(../img/spritesheet.png);
+  background-position: 0px -296px;
+  width: 62px;
+  height: 86px;
+}
+.icon-Toggle-Switch@2x {
+  background-image: url(../img/spritesheet.png);
+  background-position: 0px -818px;
+  width: 124px;
+  height: 172px;
+}
+.icon-Weebly-Logo {
+  background-image: url(../img/spritesheet.png);
+  background-position: 0px 0px;
+  width: 39px;
+  height: 39px;
+}
