@@ -41,12 +41,11 @@ module.exports.renderElement = function(data) {
   elementHandlers.deleteElementHover(element.find('.icon-delete'));
   elementHandlers.deleteElement(element.find('.icon-delete'), data._id);
   elementHandlers.dragElement(element[0]);
-  elementHandlers.dropElement(element.find('.divider')[0]);
+  elementHandlers.dropElement(element[0]);
   return element;
 };
 
 module.exports.renderPageContent = function(data) {
   var pageContent = $(handlebars.pageContent(data));
-  elementHandlers.dropElement(pageContent.find('.divider')[0]);
   return pageContent;
 }

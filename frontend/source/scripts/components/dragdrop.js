@@ -45,28 +45,62 @@ var dragdrop = {
   },
   dragOver: function(event) {
     //divider get hightlighted on hover
-    $(this).children().addClass('active');
+    if (parseInt(event.offsetX) > parseInt($(event.target).width())/4 + parseInt($(event.target).width())/2) {
+      $(this).css('border', 'none');
+      $(this).css('border-right', '2px dashed #6BBCFF');
+    } else if (parseInt(event.offsetX) < parseInt(($(event.target).width())/4)) {
+      $(this).css('border', 'none');      
+      $(this).css('border-left', '2px dashed #6BBCFF');
+    } else if (parseInt(event.offsetY) > parseInt($(event.target).height())/2){
+      $(this).css('border', 'none');
+      $(this).css('border-bottom', '2px dashed #6BBCFF');
+    } else if(parseInt(event.offsetY) < (parseInt($(event.target).height())/2)-1) {
+      $(this).css('border', 'none');
+      $(this).css('border-top', '2px dashed #6BBCFF');
+    }
     event.preventDefault();
     return false;
   },
   dragLeave: function(event) {
-    $(this).children().removeClass('active');
+    $(this).css('border', 'none');
     event.preventDefault();
   },
   drop: function(event) {
-    $(this).children().removeClass('active');
+    $(this).css('border', 'none');
     var type = event.dataTransfer.getData('type');
     var id = event.dataTransfer.getData('id');
     //if there's an id, then it means it's an existing element
     if (id) {
       //rearrange
-      $('#'+id).insertBefore($(this).parent());
+      if (parseInt(event.offsetX) > parseInt($(event.target).width())/4 + parseInt($(event.target).width())/2) {
+        //right
+      } else if (parseInt(event.offsetX) < parseInt(($(event.target).width())/4)) {
+        //left
+      } else if (parseInt(event.offsetY) > parseInt($(event.target).height())/2){
+        //bottom
+        $('#'+id).insertAfter($(this));
+      } else if(parseInt(event.offsetY) < (parseInt($(event.target).height())/2)-1) {
+        //top
+        $('#'+id).insertBefore($(this));
+      }
       view.rearrange();
     } else {
       //if no id, then call add new
       //add new
       var pageId = $(this).parents('.page-content').attr('id').slice(0, 24);
-      view.addNew(this, pageId, type);
+      var pos;
+      if (parseInt(event.offsetX) > parseInt($(event.target).width())/4 + parseInt($(event.target).width())/2) {
+        //right
+      } else if (parseInt(event.offsetX) < parseInt(($(event.target).width())/4)) {
+        //left
+      } else if (parseInt(event.offsetY) > parseInt($(event.target).height())/2){
+        //bottom
+        pos = 'bottom';
+      } else if(parseInt(event.offsetY) < (parseInt($(event.target).height())/2)-1) {
+        //top
+        pos = 'top';
+      }
+      view.addNew(this, pos, pageId, type);
     }
     event.preventDefault();
     return false;
@@ -76,32 +110,37 @@ var dragdrop = {
     //set the element id when starting drag it
     event.dataTransfer.setData('id', $(event.target).attr('id'));
     $(event.target).css('opacity', '0.2');
+    $(event.target).children('div:nth-child(2)').find('div').css('box-shadow', '0px 2px 12px 5px rgba(0,0,0,0.75)');    
   },
   elementDragEnd: function(event) {
     $(event.target).css('opacity', '1');
+    $(event.target).children('div:nth-child(2)').find('div').css('box-shadow', 'none');    
     event.preventDefault();
   },
 
   onPageDragOver: function(event) {
-    //if not hover on any of the divider then find the last divider and active it
-    if (!isInArray(event.target, $('.divider').toArray())) {
-      $('.divider:last').children().addClass('active');
+    if ($('.element-divider-wrapper').toArray().length === 0) {
+      $('.page-content').css('border-top', '2px dashed #6BBCFF');
+    } else if ($('.page-content')[0] === event.target) {
+      $('.page-content').children().last().css('border-bottom', '2px dashed #6BBCFF');
     }
     event.preventDefault();
   },
   onPageDragLeave: function(event) {
-    $('.divider:last').children().removeClass('active');
+    $('.page-content').css('border-top', 'none');
+    $('.page-content').children().last().css('border-bottom', 'none');
   }, 
   onPageDrop: function(event) {
     //if not drop on any of the divider, then add it underneath the lower-most already existing element
-    $('.divider:last').children().removeClass('active');
+    $('.page-content').css('border-top', 'none');
+    $('.page-content').children().last().css('border-bottom', 'none');
     var type = event.dataTransfer.getData('type');
     var id = event.dataTransfer.getData('id');
-    if (!isInArray(event.target, $('.divider').toArray())) { 
-      if (!id) {
-        var pageId = $(this).attr('id').slice(0, 24);
-        view.addNew($('.divider:last'), pageId, type);
-      }
+    var pos;
+    if ($('.element-divider-wrapper').toArray().length === 0 || $('.page-content')[0] === event.target) {
+      pos = 'none';
+      var pageId = $(this).attr('id').slice(0, 24);
+      view.addNew(this, pos, pageId, type);
     }
   }
 };

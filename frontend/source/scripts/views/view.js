@@ -41,7 +41,7 @@ module.exports.init = function() {
 module.exports.rearrange = function() {
   elementRearrage();
 },
-module.exports.addNew = function(place, page, type) {
+module.exports.addNew = function(place, pos,page, type) {
   var sendElement = {
     page: page,
     type: type
@@ -51,7 +51,13 @@ module.exports.addNew = function(place, page, type) {
     //render element
     var el = templates.renderElement(element);
     //insert before place
-    el.insertBefore($(place).parent());
+    if (pos === 'bottom') {
+      el.insertAfter($(place));
+    } else if (pos === 'top') {
+      el.insertBefore($(place));
+    } else if (pos === 'none') {
+      $(place).append(el);
+    }
     elementRearrage();
   }).fail(function(err) {
     console.log(err);
@@ -83,10 +89,12 @@ function insertPage(page) {
 
 function elementRearrage() {
   var elementArray = [];
-  $('.element-divider-wrapper').each(function() {
-    elementArray.push($(this).attr('id'));
-  });
-  Element.rearrange(elementArray);
+  if ($('.element-divider-wrapper').toArray().length !== 0) {
+    $('.element-divider-wrapper').each(function() {
+      elementArray.push($(this).attr('id'));
+    });
+    Element.rearrange(elementArray);
+  }
 }
 
 

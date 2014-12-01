@@ -1,9 +1,9 @@
 .element-wrapper-title {
   position: relative;
+  padding: 18px 22px;
   .element-title {
     display: inline-block;
     width: 100%;
-    padding: 5px 22px;
     min-height: 40px;
     font-family: 'ProximaNova-Reg', sans-serif;
     color: $dark-grey;
@@ -24,7 +24,6 @@
   [contentEditable=true]:empty:not(:focus):before{
     content: attr(data-placeholder);
     color: $dark-grey;
-    font-style: italic;
   }
   >span.icon-delete {
     visibility: hidden;

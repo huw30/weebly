@@ -72,9 +72,10 @@ module.exports = function(app) {
 
   app.post('/elements', function(req, res) {
     var elements = req.body.elements;
-    elements.pop();
+    console.log(elements);
+    // elements.pop();
     var vows = [];
-
+    // if (elements)
     elements.forEach(function(element, index) {
       vows.push(Element.updatePosition(element, index));
     });

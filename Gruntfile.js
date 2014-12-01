@@ -101,7 +101,7 @@ module.exports = function(grunt) {
   
 
   // Default task(s).
-  grunt.registerTask('default', ['sprite', 'sass', 'autoprefixer','browserify','handlebars','copy:main']);
-  // grunt.registerTask('default', ['sass', 'autoprefixer','browserify','handlebars','copy:main','connect:server','watch']);
+  // grunt.registerTask('default', ['sprite', 'sass', 'autoprefixer','browserify','handlebars','copy:main']);
+  grunt.registerTask('default', ['sass', 'autoprefixer','browserify','handlebars','copy:main','connect:server','watch']);
   // grunt.registerTask('sprite', ['sprite']);
 };

@@ -116,7 +116,7 @@ function getAllElements(pageId) {
   Element.getAll(pageId).then(function(elements){
     elements.forEach(function(element) {
       var el = templates.renderElement(element);
-      el.insertBefore($('#default'));
+      $('.page-content').append(el);
     });
   }).fail(function(err) {
     console.log(err);

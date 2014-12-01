@@ -1,9 +1,9 @@
 .element-wrapper-text {
   position: relative;
+  padding: 18px 22px;
   .element-text {
     display: inline-block;
     width: 100%;
-    padding: 23px 22px;
     min-height: 150px;
     font-family: 'ProximaNova-Reg', sans-serif;
     color: $dark-grey;
@@ -26,7 +26,6 @@
   [contentEditable=true]:empty:not(:focus):before{
     content: attr(data-placeholder);
     color: $dark-grey;
-    font-style: italic;
   }
   >span.icon-delete {
     visibility: hidden;
