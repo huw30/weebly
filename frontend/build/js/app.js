@@ -62,16 +62,18 @@ var dragdrop = {
   },
   dragOver: function(event) {
     //divider get hightlighted on hover
-    if (parseInt(event.offsetX) > parseInt($(event.target).width())/4 + parseInt($(event.target).width())/2) {
+    var xpos = event.offsetX === undefined ? event.layerX : event.offsetX;
+    var ypos = event.offsetY === undefined ? event.layerY : event.offsetY;
+    if (parseInt(xpos) > parseInt($(event.target).width())/4 + parseInt($(event.target).width())/2) {
       $(this).css('border', 'none');
       $(this).css('border-right', '2px dashed #6BBCFF');
-    } else if (parseInt(event.offsetX) < parseInt(($(event.target).width())/4)) {
+    } else if (parseInt(xpos) < parseInt(($(event.target).width())/4)) {
       $(this).css('border', 'none');      
       $(this).css('border-left', '2px dashed #6BBCFF');
-    } else if (parseInt(event.offsetY) > parseInt($(event.target).height())/2){
+    } else if (parseInt(ypos) > parseInt($(event.target).height())/2){
       $(this).css('border', 'none');
       $(this).css('border-bottom', '2px dashed #6BBCFF');
-    } else if(parseInt(event.offsetY) < (parseInt($(event.target).height())/2)-1) {
+    } else if(parseInt(ypos) < (parseInt($(event.target).height())/2)-1) {
       $(this).css('border', 'none');
       $(this).css('border-top', '2px dashed #6BBCFF');
     }
@@ -86,17 +88,19 @@ var dragdrop = {
     $(this).css('border', 'none');
     var type = event.dataTransfer.getData('type');
     var id = event.dataTransfer.getData('id');
+    var xpos = event.offsetX === undefined ? event.layerX : event.offsetX;
+    var ypos = event.offsetY === undefined ? event.layerY : event.offsetY;
     //if there's an id, then it means it's an existing element
     if (id) {
       //rearrange
-      if (parseInt(event.offsetX) > parseInt($(event.target).width())/4 + parseInt($(event.target).width())/2) {
+      if (parseInt(xpos) > parseInt($(event.target).width())/4 + parseInt($(event.target).width())/2) {
         //right
-      } else if (parseInt(event.offsetX) < parseInt(($(event.target).width())/4)) {
+      } else if (parseInt(xpos) < parseInt(($(event.target).width())/4)) {
         //left
-      } else if (parseInt(event.offsetY) > parseInt($(event.target).height())/2){
+      } else if (parseInt(ypos) > parseInt($(event.target).height())/2){
         //bottom
         $('#'+id).insertAfter($(this));
-      } else if(parseInt(event.offsetY) < (parseInt($(event.target).height())/2)-1) {
+      } else if(parseInt(ypos) < (parseInt($(event.target).height())/2)-1) {
         //top
         $('#'+id).insertBefore($(this));
       }
@@ -105,19 +109,21 @@ var dragdrop = {
       //if no id, then call add new
       //add new
       var pageId = $(this).parents('.page-content').attr('id').slice(0, 24);
-      var pos;
-      if (parseInt(event.offsetX) > parseInt($(event.target).width())/4 + parseInt($(event.target).width())/2) {
+      var position;
+      var xpos = event.offsetX === undefined ? event.layerX : event.offsetX;
+      var ypos = event.offsetY === undefined ? event.layerY : event.offsetY;
+      if (parseInt(xpos) > parseInt($(event.target).width())/4 + parseInt($(event.target).width())/2) {
         //right
-      } else if (parseInt(event.offsetX) < parseInt(($(event.target).width())/4)) {
+      } else if (parseInt(xpos) < parseInt(($(event.target).width())/4)) {
         //left
-      } else if (parseInt(event.offsetY) > parseInt($(event.target).height())/2){
+      } else if (parseInt(ypos) > parseInt($(event.target).height())/2){
         //bottom
-        pos = 'bottom';
-      } else if(parseInt(event.offsetY) < (parseInt($(event.target).height())/2)-1) {
+        position = 'bottom';
+      } else if(parseInt(ypos) < (parseInt($(event.target).height())/2)-1) {
         //top
-        pos = 'top';
+        position = 'top';
       }
-      view.addNew(this, pos, pageId, type);
+      view.addNew(this, position, pageId, type);
     }
     event.preventDefault();
     return false;
