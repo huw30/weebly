@@ -99,11 +99,21 @@ module.exports = function(app) {
     });
   });
 
-  app.post('/element/:id', function(req, res) {
+  app.post('/element/height/:id', function(req, res) {
     var elementId = req.params.id;
     var height = req.body.height;
+    Element.updateHeight(elementId, height).then(function() {
+      res.send({success: true});
+    }).fail(function(err) {
+      res.send(err);
+    });
+  });
+
+  app.post('/element/width/:id', function(req, res) {
+    var elementId = req.params.id;
     var width = req.body.width;
-    Element.updateAspect(elementId, height, width).then(function() {
+
+    Element.updateWidth(elementId, width).then(function() {
       res.send({success: true});
     }).fail(function(err) {
       res.send(err);

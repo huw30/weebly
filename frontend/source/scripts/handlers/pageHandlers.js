@@ -133,7 +133,7 @@ function getAllElements(pageId) {
         $(container).append(el);
         $('.page-content').append(container);
         i++;
-      } else if (parseInt(elements[i].width) == 50) {
+      } else {
         var container = templates.renderContainer();
         var el1 = templates.renderElement(elements[i]);
         var el2 = templates.renderElement(elements[i+1]);

@@ -41,11 +41,27 @@ var Element = {
     });
     return deferred.promise();
   },
-  updateAspect: function(id, payload) {
+  updateHeight: function(id, payload) {
     var deferred = vow.defer();
     $.ajax({
       type: "POST",
-      url: '/element/'+id,
+      url: '/element/height/'+id,
+      contentType: "application/json",
+      data: payload,
+      success: function() {
+        deferred.resolve();
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        deferred.reject(errorThrown);
+      }
+    });
+    return deferred.promise();
+  },
+  updateWidth: function(id, payload) {
+    var deferred = vow.defer();
+    $.ajax({
+      type: "POST",
+      url: '/element/width/'+id,
       contentType: "application/json",
       data: payload,
       success: function() {

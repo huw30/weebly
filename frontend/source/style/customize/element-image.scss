@@ -32,6 +32,14 @@
         margin-left: 5px;
       }
     }
+    @media (max-width: 991px) {
+      padding: 72px 0;
+    }
+    @media (max-width: 440px) {
+      span.icon-image-placeholder{
+        visibility: hidden;
+      }
+    }
   }
   &:hover, &:focus {
     border-radius: 7px;

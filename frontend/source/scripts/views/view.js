@@ -55,7 +55,7 @@ module.exports.addNew = function(place, pos, page, type) {
   if(pos === 'bottom' || pos === 'top' || pos === 'none') {
     width = null;
   } else  {
-    width = 50;
+    width = '50';
   }
   var sendElement = {
     page: page,
@@ -80,11 +80,10 @@ module.exports.addNew = function(place, pos, page, type) {
       $(place).append(container);
       elementRearrage();
     } else if (pos === 'left') {
-      var height = $(place).height();
-      var width = 50;
+      var width = '50';
       var id = $(place).attr('id');
-      Element.updateAspect(id, JSON.stringify({
-        height: height,
+      console.log($(place).parent().children().length);
+      Element.updateWidth(id, JSON.stringify({
         width: width
       })).then(function() {
         $(place).css('width', '50%');
@@ -93,11 +92,9 @@ module.exports.addNew = function(place, pos, page, type) {
       }); 
     } else {
       //right
-      var height = $(place).height();
-      var width = 50;
+      var width = '50';
       var id = $(place).attr('id');
-      Element.updateAspect(id, JSON.stringify({
-        height: height,
+      Element.updateWidth(id, JSON.stringify({
         width: width
       })).then(function() {
         $(place).css('width', '50%');
@@ -116,13 +113,17 @@ function createNewPage(target) {
     //send request to request new
     //then render pageButton and pageTab
     var name = $(this).siblings('.edit-page').html();
-    Page.newPage({name: name}).then(function(page) {
-      //insert into dom
-      insertPage(page);
-      $(self).siblings('.edit-page').html('');
-    }).fail(function(err) {
-      console.log(err);
-    });
+    if (name !== null && name !== '') {
+      Page.newPage({name: name}).then(function(page) {
+        //insert into dom
+        insertPage(page);
+        $(self).siblings('.edit-page').html('');
+      }).fail(function(err) {
+        console.log(err);
+      });
+    } else {
+      alert('Please give a name');
+    }
   });
 };
 

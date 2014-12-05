@@ -239,10 +239,9 @@ var elementHandlers = {
         $(this).off('mousemove');
         var grandParent = target.parents('.element-divider-wrapper');
         var height = target.parent().height();
-        var width = ( 100 * parseFloat(grandParent.css('width')) / parseFloat(grandParent.parent().css('width')));
-        Element.updateAspect(id, JSON.stringify({
-          height: height,
-          width: width
+        // var width = Math.floor( 100 * parseFloat(grandParent.css('width')) / parseFloat(grandParent.parent().css('width')));
+        Element.updateHeight(id, JSON.stringify({
+          height: height
         }));
       });
     }).mouseup(function() {
@@ -270,10 +269,8 @@ var elementHandlers = {
         var sibling = $(self).parents('.element-divider-wrapper').siblings('.element-divider-wrapper');
         if(sibling.length !== 0) {
           var sid = sibling.attr('id');
-          var height = sibling.height();
-          var width = 100;
-          Element.updateAspect(sid, JSON.stringify({
-            height: height,
+          var width = '100';
+          Element.updateWidth(sid, JSON.stringify({
             width: width
           })).then(function() {
             sibling.css('width', '100%');
@@ -446,7 +443,7 @@ function getAllElements(pageId) {
         $(container).append(el);
         $('.page-content').append(container);
         i++;
-      } else if (parseInt(elements[i].width) == 50) {
+      } else {
         var container = templates.renderContainer();
         var el1 = templates.renderElement(elements[i]);
         var el2 = templates.renderElement(elements[i+1]);
@@ -504,11 +501,27 @@ var Element = {
     });
     return deferred.promise();
   },
-  updateAspect: function(id, payload) {
+  updateHeight: function(id, payload) {
     var deferred = vow.defer();
     $.ajax({
       type: "POST",
-      url: '/element/'+id,
+      url: '/element/height/'+id,
+      contentType: "application/json",
+      data: payload,
+      success: function() {
+        deferred.resolve();
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        deferred.reject(errorThrown);
+      }
+    });
+    return deferred.promise();
+  },
+  updateWidth: function(id, payload) {
+    var deferred = vow.defer();
+    $.ajax({
+      type: "POST",
+      url: '/element/width/'+id,
       contentType: "application/json",
       data: payload,
       success: function() {
@@ -770,7 +783,7 @@ module.exports.addNew = function(place, pos, page, type) {
   if(pos === 'bottom' || pos === 'top' || pos === 'none') {
     width = null;
   } else  {
-    width = 50;
+    width = '50';
   }
   var sendElement = {
     page: page,
@@ -795,11 +808,10 @@ module.exports.addNew = function(place, pos, page, type) {
       $(place).append(container);
       elementRearrage();
     } else if (pos === 'left') {
-      var height = $(place).height();
-      var width = 50;
+      var width = '50';
       var id = $(place).attr('id');
-      Element.updateAspect(id, JSON.stringify({
-        height: height,
+      console.log($(place).parent().children().length);
+      Element.updateWidth(id, JSON.stringify({
         width: width
       })).then(function() {
         $(place).css('width', '50%');
@@ -808,11 +820,9 @@ module.exports.addNew = function(place, pos, page, type) {
       }); 
     } else {
       //right
-      var height = $(place).height();
-      var width = 50;
+      var width = '50';
       var id = $(place).attr('id');
-      Element.updateAspect(id, JSON.stringify({
-        height: height,
+      Element.updateWidth(id, JSON.stringify({
         width: width
       })).then(function() {
         $(place).css('width', '50%');
@@ -831,13 +841,17 @@ function createNewPage(target) {
     //send request to request new
     //then render pageButton and pageTab
     var name = $(this).siblings('.edit-page').html();
-    Page.newPage({name: name}).then(function(page) {
-      //insert into dom
-      insertPage(page);
-      $(self).siblings('.edit-page').html('');
-    }).fail(function(err) {
-      console.log(err);
-    });
+    if (name !== null && name !== '') {
+      Page.newPage({name: name}).then(function(page) {
+        //insert into dom
+        insertPage(page);
+        $(self).siblings('.edit-page').html('');
+      }).fail(function(err) {
+        console.log(err);
+      });
+    } else {
+      alert('Please give a name');
+    }
   });
 };
 

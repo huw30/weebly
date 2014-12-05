@@ -257,6 +257,13 @@
         font-size: 19px;
         vertical-align: middle;
         margin-left: 5px; }
+    @media (max-width: 991px) {
+      .element-wrapper-image .element-image {
+        padding: 72px 0; } }
+    @media (max-width: 440px) {
+      .element-wrapper-image .element-image span.icon-image-placeholder {
+        visibility: hidden; }
+ }
   .element-wrapper-image:hover, .element-wrapper-image:focus {
     border-radius: 7px;
     border: 2px solid #87C5FF; }

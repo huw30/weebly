@@ -150,7 +150,7 @@ Element.updateContent = function(id, content) {
   return deferred.promise();
 };
 
-Element.updateAspect = function(id, height, width) {
+Element.updateHeight = function(id, height) {
   var deferred = vow.defer();
   
   var objectid = new ObjectID(id);
@@ -168,8 +168,39 @@ Element.updateAspect = function(id, height, width) {
         _id: objectid
       }, {
         $set: {
-          width: width,
           height: height
+        }
+      }, function(err) {
+        db.close();
+        if (err) {
+          deferred.reject(err);
+        }
+        deferred.resolve();
+      });
+    });
+  });
+  return deferred.promise();
+};
+
+Element.updateWidth = function(id, width) {
+  var deferred = vow.defer();
+  
+  var objectid = new ObjectID(id);
+  
+  mongodb.connect(settings.url, function(err, db) {
+    if (err) {
+      deferred.reject(err);
+    }
+    db.collection('elements',function(err, collection) {
+      if (err) {
+        db.close();
+        deferred.reject(err);
+      }
+      collection.update({
+        _id: objectid
+      }, {
+        $set: {
+          width: width
         }
       }, function(err) {
         db.close();
