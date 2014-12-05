@@ -1,14 +1,20 @@
 this["JST"] = this["JST"] || {};
 
+this["JST"]["frontend/source/templates/container.hbs"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  return "<div class=\"col-container\"></div>";
+  },"useData":true});
+
+
+
 this["JST"]["frontend/source/templates/element-image.hbs"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
   return "<div class=\"element-divider-wrapper\" id="
     + escapeExpression(((helper = (helper = helpers._id || (depth0 != null ? depth0._id : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"_id","hash":{},"data":data}) : helper)))
-    + " draggable=\"true\">\n    <div class=\"inner-container\">\n        <div class=\"element-wrapper-image\" style=\"height: "
-    + escapeExpression(((helper = (helper = helpers.height || (depth0 != null ? depth0.height : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"height","hash":{},"data":data}) : helper)))
-    + "px; width: "
+    + " draggable=\"true\" style=\"width: "
     + escapeExpression(((helper = (helper = helpers.width || (depth0 != null ? depth0.width : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"width","hash":{},"data":data}) : helper)))
-    + "%\">\n            <span class=\"icon-delete\"></span>\n            <span class=\"icon-resize\"></span>\n            <span class=\"icon-resize\"></span>\n            <span class=\"icon-resize-rotate\"></span>\n            <div class=\"element-image\">\n                <span class=\"icon-image-placeholder\"></span>\n                <span class=\"add-image-text\">ADD IMAGE <span>+</span></span>\n            </div> \n        </div>\n    </div>\n</div>";
+    + "%\">\n    <div class=\"inner-container\">\n        <div class=\"element-wrapper-image\" style=\"height: "
+    + escapeExpression(((helper = (helper = helpers.height || (depth0 != null ? depth0.height : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"height","hash":{},"data":data}) : helper)))
+    + "px;\">\n            <span class=\"icon-delete\"></span>\n            <span class=\"icon-resize\"></span>\n            <span class=\"icon-resize\"></span>\n            <span class=\"icon-resize-rotate\"></span>\n            <div class=\"element-image\">\n                <span class=\"icon-image-placeholder\"></span>\n                <span class=\"add-image-text\">ADD IMAGE <span>+</span></span>\n            </div> \n        </div>\n    </div>\n</div>";
 },"useData":true});
 
 
@@ -17,11 +23,11 @@ this["JST"]["frontend/source/templates/element-text.hbs"] = Handlebars.template(
   var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
   return "<div class=\"element-divider-wrapper\" id="
     + escapeExpression(((helper = (helper = helpers._id || (depth0 != null ? depth0._id : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"_id","hash":{},"data":data}) : helper)))
-    + " draggable=\"true\">\n    <div class=\"inner-container\">\n        <div class=\"element-wrapper-text\" style=\"height: "
-    + escapeExpression(((helper = (helper = helpers.height || (depth0 != null ? depth0.height : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"height","hash":{},"data":data}) : helper)))
-    + "px; width: "
+    + " draggable=\"true\" style=\"width: "
     + escapeExpression(((helper = (helper = helpers.width || (depth0 != null ? depth0.width : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"width","hash":{},"data":data}) : helper)))
-    + "%\">\n            <span class=\"icon-delete\"></span>\n            <span class=\"icon-resize\"></span>\n            <span class=\"icon-resize\"></span>\n            <span class=\"icon-resize-rotate\"></span>\n            <div class=\"element-text\" contenteditable=\"true\" data-placeholder=\"Click here to edit\">"
+    + "%\">\n    <div class=\"inner-container\">\n        <div class=\"element-wrapper-text\" style=\"height: "
+    + escapeExpression(((helper = (helper = helpers.height || (depth0 != null ? depth0.height : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"height","hash":{},"data":data}) : helper)))
+    + "px;\">\n            <span class=\"icon-delete\"></span>\n            <span class=\"icon-resize\"></span>\n            <span class=\"icon-resize\"></span>\n            <span class=\"icon-resize-rotate\"></span>\n            <div class=\"element-text\" contenteditable=\"true\" data-placeholder=\"Click here to edit\">"
     + escapeExpression(((helper = (helper = helpers.content || (depth0 != null ? depth0.content : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"content","hash":{},"data":data}) : helper)))
     + "</div>\n        </div>\n    </div>\n</div>";
 },"useData":true});
@@ -32,11 +38,11 @@ this["JST"]["frontend/source/templates/element-title.hbs"] = Handlebars.template
   var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
   return "<div class=\"element-divider-wrapper\" id="
     + escapeExpression(((helper = (helper = helpers._id || (depth0 != null ? depth0._id : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"_id","hash":{},"data":data}) : helper)))
-    + " draggable=\"true\">\n    <div class=\"inner-container\">\n        <div class=\"element-wrapper-title\" style=\"height: "
-    + escapeExpression(((helper = (helper = helpers.height || (depth0 != null ? depth0.height : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"height","hash":{},"data":data}) : helper)))
-    + "px; width: "
+    + " draggable=\"true\" style=\"width: "
     + escapeExpression(((helper = (helper = helpers.width || (depth0 != null ? depth0.width : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"width","hash":{},"data":data}) : helper)))
-    + "%\">\n            <span class=\"icon-delete\"></span>\n            <span class=\"icon-resize-rotate\"></span>\n            <div class=\"element-title\" contenteditable=\"true\" data-placeholder=\"Add Title Here\">"
+    + "%\">\n    <div class=\"inner-container\">\n        <div class=\"element-wrapper-title\" style=\"height: "
+    + escapeExpression(((helper = (helper = helpers.height || (depth0 != null ? depth0.height : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"height","hash":{},"data":data}) : helper)))
+    + "px;\">\n            <span class=\"icon-delete\"></span>\n            <span class=\"icon-resize-rotate\"></span>\n            <div class=\"element-title\" contenteditable=\"true\" data-placeholder=\"Add Title Here\">"
     + escapeExpression(((helper = (helper = helpers.content || (depth0 != null ? depth0.content : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"content","hash":{},"data":data}) : helper)))
     + "</div>\n        </div>\n    </div>\n</div>";
 },"useData":true});

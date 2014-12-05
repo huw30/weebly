@@ -52,7 +52,9 @@ module.exports = function(app) {
 
   app.post('/element/new', function(req, res) {
     console.log(req.body);
-    var newElement = new Element(req.body.page, req.body.type, null, null, 'auto', 'auto');
+    var height = req.body.height || '';
+    var width = req.body.width || '';
+    var newElement = new Element(req.body.page, req.body.type, null, null, height, width);
     newElement.save().then(function(element) {
       res.send(element);
     }).fail(function(err) {

@@ -14,7 +14,7 @@
 },{}],2:[function(require,module,exports){
 require('./views/view').init();
 
-},{"./views/view":10}],3:[function(require,module,exports){
+},{"./views/view":11}],3:[function(require,module,exports){
 var view = require('../views/view');
 
 var dragdrop = {
@@ -62,26 +62,54 @@ var dragdrop = {
   },
   dragOver: function(event) {
     //divider get hightlighted on hover
+    var width = ( 100 * parseFloat($(this).css('width')) / parseFloat($(this).parent().css('width')));
+    $(this).children('div').addClass('no-action');
     var xpos = event.offsetX === undefined ? event.layerX : event.offsetX;
     var ypos = event.offsetY === undefined ? event.layerY : event.offsetY;
     $(this).children('div').css('border', 'none');
+    $(this).parent().css('border', 'none');
     if (parseInt(xpos) > parseInt($(this).width())/4 + parseInt($(this).width())/2) {
       $(this).children('div').css('border-right', '2px dashed #6BBCFF');
+      if (width == 100) {
+        $(this).children('div').addClass('move');
+      }
     } else if (parseInt(xpos) < parseInt(($(this).width())/4)) {
       $(this).children('div').css('border-left', '2px dashed #6BBCFF');
+      if (width == 100) {
+        $(this).children('div').addClass('move');
+        $(this).children('div').addClass('to-right');
+      }
     } else if (parseInt(ypos) > parseInt($(this).height())/2){
-      $(this).children('div').css('border-bottom', '2px dashed #6BBCFF');  
+      $(this).parent().css('border-bottom', '2px dashed #6BBCFF');
+      if (width == 100) {
+        $(this).children('div').removeClass('move');
+        $(this).children('div').removeClass('to-right'); 
+      }   
     } else if(parseInt(ypos) < (parseInt($(this).height())/2)-1) {
-      $(this).children('div').css('border-top', '2px dashed #6BBCFF');
+      $(this).parent().css('border-top', '2px dashed #6BBCFF');
+      if (width == 100) {
+        $(this).children('div').removeClass('move');
+        $(this).children('div').removeClass('to-right');
+      }
     }
     event.preventDefault();
   },
   dragLeave: function(event) {
+    if (event.target == this) {
+      $(this).children('div').removeClass('move');
+      $(this).children('div').removeClass('to-right');
+      $(this).children('div').removeClass('no-action');
+    }
     $(this).children('div').css('border', 'none');
+    $(this).parent().css('border', 'none');
     event.preventDefault();
   },
   drop: function(event) {
+    $(this).children('div').removeClass('move');
+    $(this).children('div').removeClass('to-right');
+    $(this).children('div').removeClass('no-action');
     $(this).children('div').css('border', 'none');
+    $(this).parent().css('border', 'none');
     var type = event.dataTransfer.getData('type');
     var id = event.dataTransfer.getData('id');
     var xpos = event.offsetX === undefined ? event.layerX : event.offsetX;
@@ -91,6 +119,7 @@ var dragdrop = {
       //rearrange
       if (parseInt(xpos) > parseInt($(event.target).width())/4 + parseInt($(event.target).width())/2) {
         //right
+        $('#'+id).insertAfter($(this));
       } else if (parseInt(xpos) < parseInt(($(event.target).width())/4)) {
         //left
         $('#'+id).insertBefore($(this));
@@ -173,7 +202,7 @@ function isInArray(value, array) {
 }
 
 
-},{"../views/view":10}],4:[function(require,module,exports){
+},{"../views/view":11}],4:[function(require,module,exports){
 var dragdrop = require('../components/dragdrop');
 var Element = require('../models/element');
 var view = require('../views/view');
@@ -208,8 +237,9 @@ var elementHandlers = {
       }).mouseup(function() {
         current.parent.removeClass('bordered');
         $(this).off('mousemove');
+        var grandParent = target.parents('.element-divider-wrapper');
         var height = target.parent().height();
-        var width = ( 100 * parseFloat(target.parent().css('width')) / parseFloat(target.parent().parent().css('width')));
+        var width = ( 100 * parseFloat(grandParent.css('width')) / parseFloat(grandParent.parent().css('width')));
         Element.updateAspect(id, JSON.stringify({
           height: height,
           width: width
@@ -237,7 +267,21 @@ var elementHandlers = {
       var self = this;
       Element.deleteElement(id).then(function() {
         //after the element is deleted in database, datach the DOM element
-        $(self).parents('.element-divider-wrapper').detach();
+        var sibling = $(self).parents('.element-divider-wrapper').siblings('.element-divider-wrapper');
+        if(sibling.length !== 0) {
+          var sid = sibling.attr('id');
+          var height = sibling.height();
+          var width = 100;
+          Element.updateAspect(sid, JSON.stringify({
+            height: height,
+            width: width
+          })).then(function() {
+            sibling.css('width', '100%');
+            $(self).parents('.element-divider-wrapper').detach();
+          });
+        } else {
+          $(self).parents('.element-divider-wrapper').detach();
+        }
         //rearrange the element position
         view.rearrange();
       }).fail(function(err) {
@@ -266,13 +310,15 @@ var elementHandlers = {
 };
 
 module.exports = elementHandlers;
-},{"../components/dragdrop":3,"../models/element":6,"../placeholder":8,"../views/view":10}],5:[function(require,module,exports){
+},{"../components/dragdrop":3,"../models/element":6,"../placeholder":8,"../views/view":11}],5:[function(require,module,exports){
 var Page = require('../models/page');
 var Element = require('../models/element');
 var templates = require('../views/templates');
 var dragdrop = require('../components/dragdrop');
+var Route = require('../route');
 
 var pageHandlers = (function() {
+  var router = new Route();
   var handlers = {
     clickToggle: function(target) {
       $(target).click(function() {
@@ -296,16 +342,29 @@ var pageHandlers = (function() {
         }
       );
     },
-    edit: function(target) {
+    edit: function(target, id) {
       target.click(function() {
+        router.set(id, 'edit');
         $(this).parent().css('border-color', '#4C657C');
         $(this).parent().css('background-color', 'transparent');      
         $(this).siblings('div').attr('contenteditable', 'true');
         $(this).css('visibility', 'hidden');
       });
     },
+    focusAdd: function(target) {
+      var id;
+      target.focus(function() {
+        id = router.getId();
+        router.set(null, 'add');
+      });
+      target.blur(function() {
+        router.set(id, 'page');
+      });
+    },
     focusOut: function(target, id) {
       target.blur(function() {
+        var presentId = $('ul.page-tab li.active').attr('id');
+        router.set(presentId.split('-')[0],'page');
         var self = this;
         $(this).parent().css('border-color', '#488ACD');
         $(this).parent().css('background-color', '#488ACD');
@@ -338,6 +397,7 @@ var pageHandlers = (function() {
         var self = this;
         Page.deletePage(id).then(function() {
           //then detach page button
+          router.set(null,null);
           $(self).parent().detach();
           $('#'+id+'-c').detach();
           $('#'+id+'-t').detach();
@@ -348,6 +408,7 @@ var pageHandlers = (function() {
     },
     requestElements: function(target, pageId) {
        $(target).click(function() {
+        router.set(pageId, 'page');
         $('.page-content').detach();
         $(this).siblings().each(function() {
           $(this).removeClass('active');
@@ -377,15 +438,29 @@ function getAllElements(pageId) {
   pageContent[0].addEventListener('drop', dragdrop.onPageDrop, false);
   $('.view-container').append(pageContent);
   Element.getAll(pageId).then(function(elements){
-    elements.forEach(function(element) {
-      var el = templates.renderElement(element);
-      $('.page-content').append(el);
-    });
+    var i = 0;
+    while (i < elements.length) {
+      if (elements[i].width == "" || elements[i].width == 100) {
+        var container = templates.renderContainer();
+        var el = templates.renderElement(elements[i]);
+        $(container).append(el);
+        $('.page-content').append(container);
+        i++;
+      } else if (parseInt(elements[i].width) == 50) {
+        var container = templates.renderContainer();
+        var el1 = templates.renderElement(elements[i]);
+        var el2 = templates.renderElement(elements[i+1]);
+        $(container).append(el1);
+        $(container).append(el2);
+        $('.page-content').append(container);
+        i = i+2;
+      }
+    }
   }).fail(function(err) {
     console.log(err);
   });
 };
-},{"../components/dragdrop":3,"../models/element":6,"../models/page":7,"../views/templates":9}],6:[function(require,module,exports){
+},{"../components/dragdrop":3,"../models/element":6,"../models/page":7,"../route":9,"../views/templates":10}],6:[function(require,module,exports){
 /*
 Element model. Handles all ajax calls to backend
 
@@ -483,7 +558,7 @@ var Element = {
 };
 
 module.exports = Element;
-},{"vow":12}],7:[function(require,module,exports){
+},{"vow":13}],7:[function(require,module,exports){
 /*
 Page model. Handles all ajax calls to backend
 
@@ -553,12 +628,32 @@ var Page = {
 };
 
 module.exports = Page;
-},{"vow":12}],8:[function(require,module,exports){
+},{"vow":13}],8:[function(require,module,exports){
 module.exports=module.exports= {
   "title": "Lorem ipsum",
   "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
 }
 },{}],9:[function(require,module,exports){
+function Route(){};
+
+Route.prototype.set = function(id, action) {
+  if (!id && !action) {
+    location.hash = '';
+  } else if (!id) {
+    location.hash = '#' + action;
+  } else {
+    location.hash = '#' + action + '/' + id;
+  }
+}
+
+Route.prototype.getId = function() {
+  var url = window.location.hash.substr(1);
+  var id = url.split('/')[1];
+  return id;
+}
+
+module.exports = Route;
+},{}],10:[function(require,module,exports){
 // var $ = require('jquery');
 var pageHandlers = require('../handlers/pageHandlers');
 var elementHandlers = require('../handlers/elementHandlers');
@@ -569,13 +664,14 @@ var handlebars = {
   title: JST['frontend/source/templates/element-title.hbs'],
   pageButton: JST['frontend/source/templates/page-button.hbs'],
   pageTab: JST['frontend/source/templates/page-tab.hbs'],
-  pageContent: JST['frontend/source/templates/page-content.hbs']
+  pageContent: JST['frontend/source/templates/page-content.hbs'],
+  container: JST['frontend/source/templates/container.hbs']
 };
 
 module.exports.renderPageButton = function(page) {
   var pageButton = $(handlebars.pageButton(page)); //get dom elements
   pageHandlers.buttonHover(pageButton);
-  pageHandlers.edit(pageButton.find('.icon-edit'));
+  pageHandlers.edit(pageButton.find('.icon-edit'), page._id);
   pageHandlers.focusOut(pageButton.find('div:first-of-type'), page._id);
   pageHandlers.deletePageHover(pageButton.find('.icon-delete-grey'));
   pageHandlers.deletePage(pageButton.find('.icon-delete-grey'), page._id);
@@ -611,18 +707,26 @@ module.exports.renderPageContent = function(data) {
   var pageContent = $(handlebars.pageContent(data));
   return pageContent;
 };
-},{"../handlers/elementHandlers":4,"../handlers/pageHandlers":5}],10:[function(require,module,exports){
+
+module.exports.renderContainer = function() {
+  var container = $(handlebars.container());
+  return container;
+};
+},{"../handlers/elementHandlers":4,"../handlers/pageHandlers":5}],11:[function(require,module,exports){
 var $ = require('jquery');
 var Page = require('../models/page');
 var Element = require('../models/element');
 var templates = require('../views/templates');
 var dragdrop = require('../components/dragdrop');
 var pageHandlers = require('../handlers/pageHandlers');
+var Route = require('../route');
 
+var router = new Route();
 
 module.exports.init = function() {
   //add new page handler
   createNewPage($('.icon-add'));
+  pageHandlers.focusAdd($('.edit-page'));
   pageHandlers.clickToggle($('.setting .icon-toggle-off'));
   $('.sidebar').mouseover(function() {
     $('.view-container').addClass('active');
@@ -636,15 +740,20 @@ module.exports.init = function() {
     this.addEventListener('drag', dragdrop.drag, false);
     this.addEventListener('dragend', dragdrop.dragEnd, false);
   });
-
+  
   //get all pages
   Page.getAll().then(function(pages) {
     if (pages.length > 0) {
       pages.forEach(function(page) {
         insertPage(page);
       });
-      var id = $('.page-list li:first-of-type').attr('id');
-      // get all elements of first tab
+      var id;
+      if (router.getId()) {
+        id = router.getId();
+      } else {
+        id = $('.page-list li:first-of-type').attr('id');
+        router.set(id, 'page');
+      }
       pageHandlers.getAllElements(id);
     }
   }).fail(function(err) {
@@ -654,38 +763,67 @@ module.exports.init = function() {
 
 module.exports.rearrange = function() {
   elementRearrage();
-},
+};
+
 module.exports.addNew = function(place, pos, page, type) {
+  var width;
+  if(pos === 'bottom' || pos === 'top' || pos === 'none') {
+    width = null;
+  } else  {
+    width = 50;
+  }
   var sendElement = {
     page: page,
-    type: type
+    type: type,
+    width: width
   }
   //send request to add new [type] return new element with id 
   Element.newElement(sendElement).then(function(element) {
     //render element
+    var container = templates.renderContainer();
     var el = templates.renderElement(element);
+    $(container).append(el);
+    
     //insert before place
     if (pos === 'bottom') {
-      el.insertAfter($(place));
+      container.insertAfter($(place).parent());
+      elementRearrage();
     } else if (pos === 'top') {
-      el.insertBefore($(place));
+      container.insertBefore($(place).parent());
+      elementRearrage();
     } else if (pos === 'none') {
-      $(place).append(el);
+      $(place).append(container);
+      elementRearrage();
     } else if (pos === 'left') {
-      $(place).css('width', '50%');
-      $(el).css('width', '50%');
-      el.insertBefore($(place));  
+      var height = $(place).height();
+      var width = 50;
+      var id = $(place).attr('id');
+      Element.updateAspect(id, JSON.stringify({
+        height: height,
+        width: width
+      })).then(function() {
+        $(place).css('width', '50%');
+        el.insertBefore($(place)); 
+        elementRearrage();
+      }); 
     } else {
       //right
-      $(place).css('width', '50%');
-      $(el).css('width', '50%');
-      el.insertAfter($(place));
+      var height = $(place).height();
+      var width = 50;
+      var id = $(place).attr('id');
+      Element.updateAspect(id, JSON.stringify({
+        height: height,
+        width: width
+      })).then(function() {
+        $(place).css('width', '50%');
+        el.insertAfter($(place)); 
+        elementRearrage();
+      }); 
     }
-    elementRearrage();
   }).fail(function(err) {
     console.log(err);
   });
-}
+};
 
 function createNewPage(target) {
   target.click(function() {
@@ -718,11 +856,11 @@ function elementRearrage() {
     });
     Element.rearrange(elementArray);
   }
-}
+};
 
 
 
-},{"../components/dragdrop":3,"../handlers/pageHandlers":5,"../models/element":6,"../models/page":7,"../views/templates":9,"jquery":1}],11:[function(require,module,exports){
+},{"../components/dragdrop":3,"../handlers/pageHandlers":5,"../models/element":6,"../models/page":7,"../route":9,"../views/templates":10,"jquery":1}],12:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -810,7 +948,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function (process){
 /**
  * @module vow
@@ -2130,4 +2268,4 @@ defineAsGlobal && (global.vow = vow);
 })(this);
 
 }).call(this,require('_process'))
-},{"_process":11}]},{},[2]);
+},{"_process":12}]},{},[2]);

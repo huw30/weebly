@@ -224,6 +224,10 @@
   .element-divider-wrapper .inner-container.no-action {
     pointer-events: none; }
 
+.col-container {
+  display: block;
+  width: 100%; }
+
 .element-wrapper-image {
   position: relative;
   padding: 25px 22px 39px 22px;

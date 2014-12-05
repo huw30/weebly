@@ -2,8 +2,10 @@ var Page = require('../models/page');
 var Element = require('../models/element');
 var templates = require('../views/templates');
 var dragdrop = require('../components/dragdrop');
+var Route = require('../route');
 
 var pageHandlers = (function() {
+  var router = new Route();
   var handlers = {
     clickToggle: function(target) {
       $(target).click(function() {
@@ -27,16 +29,29 @@ var pageHandlers = (function() {
         }
       );
     },
-    edit: function(target) {
+    edit: function(target, id) {
       target.click(function() {
+        router.set(id, 'edit');
         $(this).parent().css('border-color', '#4C657C');
         $(this).parent().css('background-color', 'transparent');      
         $(this).siblings('div').attr('contenteditable', 'true');
         $(this).css('visibility', 'hidden');
       });
     },
+    focusAdd: function(target) {
+      var id;
+      target.focus(function() {
+        id = router.getId();
+        router.set(null, 'add');
+      });
+      target.blur(function() {
+        router.set(id, 'page');
+      });
+    },
     focusOut: function(target, id) {
       target.blur(function() {
+        var presentId = $('ul.page-tab li.active').attr('id');
+        router.set(presentId.split('-')[0],'page');
         var self = this;
         $(this).parent().css('border-color', '#488ACD');
         $(this).parent().css('background-color', '#488ACD');
@@ -69,6 +84,7 @@ var pageHandlers = (function() {
         var self = this;
         Page.deletePage(id).then(function() {
           //then detach page button
+          router.set(null,null);
           $(self).parent().detach();
           $('#'+id+'-c').detach();
           $('#'+id+'-t').detach();
@@ -79,6 +95,7 @@ var pageHandlers = (function() {
     },
     requestElements: function(target, pageId) {
        $(target).click(function() {
+        router.set(pageId, 'page');
         $('.page-content').detach();
         $(this).siblings().each(function() {
           $(this).removeClass('active');
@@ -108,10 +125,24 @@ function getAllElements(pageId) {
   pageContent[0].addEventListener('drop', dragdrop.onPageDrop, false);
   $('.view-container').append(pageContent);
   Element.getAll(pageId).then(function(elements){
-    elements.forEach(function(element) {
-      var el = templates.renderElement(element);
-      $('.page-content').append(el);
-    });
+    var i = 0;
+    while (i < elements.length) {
+      if (elements[i].width == "" || elements[i].width == 100) {
+        var container = templates.renderContainer();
+        var el = templates.renderElement(elements[i]);
+        $(container).append(el);
+        $('.page-content').append(container);
+        i++;
+      } else if (parseInt(elements[i].width) == 50) {
+        var container = templates.renderContainer();
+        var el1 = templates.renderElement(elements[i]);
+        var el2 = templates.renderElement(elements[i+1]);
+        $(container).append(el1);
+        $(container).append(el2);
+        $('.page-content').append(container);
+        i = i+2;
+      }
+    }
   }).fail(function(err) {
     console.log(err);
   });

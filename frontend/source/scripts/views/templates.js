@@ -8,13 +8,14 @@ var handlebars = {
   title: JST['frontend/source/templates/element-title.hbs'],
   pageButton: JST['frontend/source/templates/page-button.hbs'],
   pageTab: JST['frontend/source/templates/page-tab.hbs'],
-  pageContent: JST['frontend/source/templates/page-content.hbs']
+  pageContent: JST['frontend/source/templates/page-content.hbs'],
+  container: JST['frontend/source/templates/container.hbs']
 };
 
 module.exports.renderPageButton = function(page) {
   var pageButton = $(handlebars.pageButton(page)); //get dom elements
   pageHandlers.buttonHover(pageButton);
-  pageHandlers.edit(pageButton.find('.icon-edit'));
+  pageHandlers.edit(pageButton.find('.icon-edit'), page._id);
   pageHandlers.focusOut(pageButton.find('div:first-of-type'), page._id);
   pageHandlers.deletePageHover(pageButton.find('.icon-delete-grey'));
   pageHandlers.deletePage(pageButton.find('.icon-delete-grey'), page._id);
@@ -49,4 +50,9 @@ module.exports.renderElement = function(data) {
 module.exports.renderPageContent = function(data) {
   var pageContent = $(handlebars.pageContent(data));
   return pageContent;
+};
+
+module.exports.renderContainer = function() {
+  var container = $(handlebars.container());
+  return container;
 };

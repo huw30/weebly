@@ -45,25 +45,35 @@ var dragdrop = {
   },
   dragOver: function(event) {
     //divider get hightlighted on hover
+    var width = ( 100 * parseFloat($(this).css('width')) / parseFloat($(this).parent().css('width')));
     $(this).children('div').addClass('no-action');
     var xpos = event.offsetX === undefined ? event.layerX : event.offsetX;
     var ypos = event.offsetY === undefined ? event.layerY : event.offsetY;
     $(this).children('div').css('border', 'none');
+    $(this).parent().css('border', 'none');
     if (parseInt(xpos) > parseInt($(this).width())/4 + parseInt($(this).width())/2) {
       $(this).children('div').css('border-right', '2px dashed #6BBCFF');
-      $(this).children('div').addClass('move');
+      if (width == 100) {
+        $(this).children('div').addClass('move');
+      }
     } else if (parseInt(xpos) < parseInt(($(this).width())/4)) {
       $(this).children('div').css('border-left', '2px dashed #6BBCFF');
-      $(this).children('div').addClass('move');
-      $(this).children('div').addClass('to-right');
+      if (width == 100) {
+        $(this).children('div').addClass('move');
+        $(this).children('div').addClass('to-right');
+      }
     } else if (parseInt(ypos) > parseInt($(this).height())/2){
-      $(this).children('div').css('border-bottom', '2px dashed #6BBCFF');
-      $(this).children('div').removeClass('move');
-      $(this).children('div').removeClass('to-right');    
+      $(this).parent().css('border-bottom', '2px dashed #6BBCFF');
+      if (width == 100) {
+        $(this).children('div').removeClass('move');
+        $(this).children('div').removeClass('to-right'); 
+      }   
     } else if(parseInt(ypos) < (parseInt($(this).height())/2)-1) {
-      $(this).children('div').css('border-top', '2px dashed #6BBCFF');
-      $(this).children('div').removeClass('move');
-      $(this).children('div').removeClass('to-right');
+      $(this).parent().css('border-top', '2px dashed #6BBCFF');
+      if (width == 100) {
+        $(this).children('div').removeClass('move');
+        $(this).children('div').removeClass('to-right');
+      }
     }
     event.preventDefault();
   },
@@ -74,6 +84,7 @@ var dragdrop = {
       $(this).children('div').removeClass('no-action');
     }
     $(this).children('div').css('border', 'none');
+    $(this).parent().css('border', 'none');
     event.preventDefault();
   },
   drop: function(event) {
@@ -81,6 +92,7 @@ var dragdrop = {
     $(this).children('div').removeClass('to-right');
     $(this).children('div').removeClass('no-action');
     $(this).children('div').css('border', 'none');
+    $(this).parent().css('border', 'none');
     var type = event.dataTransfer.getData('type');
     var id = event.dataTransfer.getData('id');
     var xpos = event.offsetX === undefined ? event.layerX : event.offsetX;
@@ -90,8 +102,10 @@ var dragdrop = {
       //rearrange
       if (parseInt(xpos) > parseInt($(event.target).width())/4 + parseInt($(event.target).width())/2) {
         //right
+        $('#'+id).insertAfter($(this));
       } else if (parseInt(xpos) < parseInt(($(event.target).width())/4)) {
         //left
+        $('#'+id).insertBefore($(this));
       } else if (parseInt(ypos) > parseInt($(event.target).height())/2){
         //bottom
         $('#'+id).insertAfter($(this));

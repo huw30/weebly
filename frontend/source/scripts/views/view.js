@@ -4,11 +4,14 @@ var Element = require('../models/element');
 var templates = require('../views/templates');
 var dragdrop = require('../components/dragdrop');
 var pageHandlers = require('../handlers/pageHandlers');
+var Route = require('../route');
 
+var router = new Route();
 
 module.exports.init = function() {
   //add new page handler
   createNewPage($('.icon-add'));
+  pageHandlers.focusAdd($('.edit-page'));
   pageHandlers.clickToggle($('.setting .icon-toggle-off'));
   $('.sidebar').mouseover(function() {
     $('.view-container').addClass('active');
@@ -22,15 +25,20 @@ module.exports.init = function() {
     this.addEventListener('drag', dragdrop.drag, false);
     this.addEventListener('dragend', dragdrop.dragEnd, false);
   });
-
+  
   //get all pages
   Page.getAll().then(function(pages) {
     if (pages.length > 0) {
       pages.forEach(function(page) {
         insertPage(page);
       });
-      var id = $('.page-list li:first-of-type').attr('id');
-      // get all elements of first tab
+      var id;
+      if (router.getId()) {
+        id = router.getId();
+      } else {
+        id = $('.page-list li:first-of-type').attr('id');
+        router.set(id, 'page');
+      }
       pageHandlers.getAllElements(id);
     }
   }).fail(function(err) {
@@ -40,38 +48,67 @@ module.exports.init = function() {
 
 module.exports.rearrange = function() {
   elementRearrage();
-},
+};
+
 module.exports.addNew = function(place, pos, page, type) {
+  var width;
+  if(pos === 'bottom' || pos === 'top' || pos === 'none') {
+    width = null;
+  } else  {
+    width = 50;
+  }
   var sendElement = {
     page: page,
-    type: type
+    type: type,
+    width: width
   }
   //send request to add new [type] return new element with id 
   Element.newElement(sendElement).then(function(element) {
     //render element
+    var container = templates.renderContainer();
     var el = templates.renderElement(element);
+    $(container).append(el);
+    
     //insert before place
     if (pos === 'bottom') {
-      el.insertAfter($(place));
+      container.insertAfter($(place).parent());
+      elementRearrage();
     } else if (pos === 'top') {
-      el.insertBefore($(place));
+      container.insertBefore($(place).parent());
+      elementRearrage();
     } else if (pos === 'none') {
-      $(place).append(el);
+      $(place).append(container);
+      elementRearrage();
     } else if (pos === 'left') {
-      $(place).css('width', '50%');
-      $(el).css('width', '50%');
-      el.insertBefore($(place));  
+      var height = $(place).height();
+      var width = 50;
+      var id = $(place).attr('id');
+      Element.updateAspect(id, JSON.stringify({
+        height: height,
+        width: width
+      })).then(function() {
+        $(place).css('width', '50%');
+        el.insertBefore($(place)); 
+        elementRearrage();
+      }); 
     } else {
       //right
-      $(place).css('width', '50%');
-      $(el).css('width', '50%');
-      el.insertAfter($(place));
+      var height = $(place).height();
+      var width = 50;
+      var id = $(place).attr('id');
+      Element.updateAspect(id, JSON.stringify({
+        height: height,
+        width: width
+      })).then(function() {
+        $(place).css('width', '50%');
+        el.insertAfter($(place)); 
+        elementRearrage();
+      }); 
     }
-    elementRearrage();
   }).fail(function(err) {
     console.log(err);
   });
-}
+};
 
 function createNewPage(target) {
   target.click(function() {
@@ -104,6 +141,6 @@ function elementRearrage() {
     });
     Element.rearrange(elementArray);
   }
-}
+};
 
 

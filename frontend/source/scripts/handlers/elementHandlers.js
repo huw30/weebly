@@ -32,8 +32,9 @@ var elementHandlers = {
       }).mouseup(function() {
         current.parent.removeClass('bordered');
         $(this).off('mousemove');
+        var grandParent = target.parents('.element-divider-wrapper');
         var height = target.parent().height();
-        var width = ( 100 * parseFloat(target.parent().css('width')) / parseFloat(target.parent().parent().css('width')));
+        var width = ( 100 * parseFloat(grandParent.css('width')) / parseFloat(grandParent.parent().css('width')));
         Element.updateAspect(id, JSON.stringify({
           height: height,
           width: width
@@ -61,7 +62,21 @@ var elementHandlers = {
       var self = this;
       Element.deleteElement(id).then(function() {
         //after the element is deleted in database, datach the DOM element
-        $(self).parents('.element-divider-wrapper').detach();
+        var sibling = $(self).parents('.element-divider-wrapper').siblings('.element-divider-wrapper');
+        if(sibling.length !== 0) {
+          var sid = sibling.attr('id');
+          var height = sibling.height();
+          var width = 100;
+          Element.updateAspect(sid, JSON.stringify({
+            height: height,
+            width: width
+          })).then(function() {
+            sibling.css('width', '100%');
+            $(self).parents('.element-divider-wrapper').detach();
+          });
+        } else {
+          $(self).parents('.element-divider-wrapper').detach();
+        }
         //rearrange the element position
         view.rearrange();
       }).fail(function(err) {
