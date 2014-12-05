@@ -52,4 +52,18 @@
 
 .element-divider-wrapper {
   margin-bottom: 10px;
+  display: inline-block;
+  width: 100%;
+  vertical-align: top;
+  .inner-container {
+    &.move {
+      width: 50% !important;
+    }
+    &.to-right {
+      margin-left: 50%;
+    }
+    &.no-action {
+      pointer-events: none;
+    }
+  }
 }

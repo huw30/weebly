@@ -41,7 +41,7 @@ module.exports.init = function() {
 module.exports.rearrange = function() {
   elementRearrage();
 },
-module.exports.addNew = function(place, pos,page, type) {
+module.exports.addNew = function(place, pos, page, type) {
   var sendElement = {
     page: page,
     type: type
@@ -57,6 +57,15 @@ module.exports.addNew = function(place, pos,page, type) {
       el.insertBefore($(place));
     } else if (pos === 'none') {
       $(place).append(el);
+    } else if (pos === 'left') {
+      $(place).css('width', '50%');
+      $(el).css('width', '50%');
+      el.insertBefore($(place));  
+    } else {
+      //right
+      $(place).css('width', '50%');
+      $(el).css('width', '50%');
+      el.insertAfter($(place));
     }
     elementRearrage();
   }).fail(function(err) {

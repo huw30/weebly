@@ -3,6 +3,12 @@
   padding: 18px 22px;
   min-height: 75px;
   text-overflow: scroll;
+  &.move {
+    width: 50% !important;
+  }
+  &.to-right {
+    margin-left: 50%;
+  }
   &.bordered {
     border-radius: 7px;
     border: 2px solid $anakiwa;
