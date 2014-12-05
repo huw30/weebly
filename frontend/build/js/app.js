@@ -14,7 +14,7 @@
 },{}],2:[function(require,module,exports){
 require('./views/view').init();
 
-},{"./views/view":9}],3:[function(require,module,exports){
+},{"./views/view":10}],3:[function(require,module,exports){
 var view = require('../views/view');
 
 var dragdrop = {
@@ -73,9 +73,11 @@ var dragdrop = {
     } else if (parseInt(ypos) > parseInt($(event.target).height())/2){
       $(this).css('border', 'none');
       $(this).css('border-bottom', '2px dashed #6BBCFF');
+      $(this).css('width', '100%');      
     } else if(parseInt(ypos) < (parseInt($(event.target).height())/2)-1) {
       $(this).css('border', 'none');
       $(this).css('border-top', '2px dashed #6BBCFF');
+      $(this).css('width', '100%');
     }
     event.preventDefault();
     return false;
@@ -174,12 +176,52 @@ function isInArray(value, array) {
 }
 
 
-},{"../views/view":9}],4:[function(require,module,exports){
+},{"../views/view":10}],4:[function(require,module,exports){
 var dragdrop = require('../components/dragdrop');
 var Element = require('../models/element');
 var view = require('../views/view');
+var placeholder = require('../placeholder');
 
 var elementHandlers = {
+  resizeElement: function(target, id) {
+    target.mousedown(function() {
+      event.preventDefault();
+      var current = this;
+      current.originalPosition = parseInt(event.pageY);
+      current.parent = $(current).parent();
+      var startHeight = parseInt($(current).parent().height());
+      var divType = $(current).siblings('div').attr('class');
+      if ($(current).siblings('div').html() == '') {
+        if (divType === 'element-text') {
+          $(current).siblings('div').html(placeholder.text);
+          var content = $(current).siblings('div').text();
+          Element.edit(id, JSON.stringify({content: content}));
+        } else if (divType === 'element-title') {
+          $(current).siblings('div').html(placeholder.title);
+          var content = $(current).siblings('div').text();
+          Element.edit(id, JSON.stringify({content: content}));
+        }
+      }
+      $(document).mousemove(function() {
+        event.preventDefault();
+        current.parent.addClass('bordered');
+        current.parent.height(
+          startHeight + (event.pageY - current.originalPosition)
+        );
+      }).mouseup(function() {
+        current.parent.removeClass('bordered');
+        $(this).off('mousemove');
+        var height = target.parent().height();
+        var width = ( 100 * parseFloat(target.parent().css('width')) / parseFloat(target.parent().parent().css('width')));
+        Element.updateAspect(id, JSON.stringify({
+          height: height,
+          width: width
+        }));
+      });
+    }).mouseup(function() {
+      $(this).off('mousemove');
+    });
+  },
   changeContent: function(target, id) {
     target.blur(function() {
       var content = $(this).text();
@@ -227,7 +269,7 @@ var elementHandlers = {
 };
 
 module.exports = elementHandlers;
-},{"../components/dragdrop":3,"../models/element":6,"../views/view":9}],5:[function(require,module,exports){
+},{"../components/dragdrop":3,"../models/element":6,"../placeholder":8,"../views/view":10}],5:[function(require,module,exports){
 var Page = require('../models/page');
 var Element = require('../models/element');
 var templates = require('../views/templates');
@@ -299,15 +341,9 @@ var pageHandlers = (function() {
         var self = this;
         Page.deletePage(id).then(function() {
           //then detach page button
-          var siblingPage = $(self).parent().prev()?$(self).parent().prev(): $(self).parent().next();
           $(self).parent().detach();
-          $('#'+id+'-t').detach();
           $('#'+id+'-c').detach();
-          //if there's another page, get that page's all elements 
-          if (siblingPage) {
-            getAllElements(siblingPage.attr('id'));
-          }
-          //if not, do nothing
+          $('#'+id+'-t').detach();
         }).fail(function(err) {
           console.log(err);
         });
@@ -352,7 +388,7 @@ function getAllElements(pageId) {
     console.log(err);
   });
 };
-},{"../components/dragdrop":3,"../models/element":6,"../models/page":7,"../views/templates":8}],6:[function(require,module,exports){
+},{"../components/dragdrop":3,"../models/element":6,"../models/page":7,"../views/templates":9}],6:[function(require,module,exports){
 /*
 Element model. Handles all ajax calls to backend
 
@@ -384,6 +420,22 @@ var Element = {
     var deferred = vow.defer();
     $.ajax({
       type: "PUT",
+      url: '/element/'+id,
+      contentType: "application/json",
+      data: payload,
+      success: function() {
+        deferred.resolve();
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        deferred.reject(errorThrown);
+      }
+    });
+    return deferred.promise();
+  },
+  updateAspect: function(id, payload) {
+    var deferred = vow.defer();
+    $.ajax({
+      type: "POST",
       url: '/element/'+id,
       contentType: "application/json",
       data: payload,
@@ -434,7 +486,7 @@ var Element = {
 };
 
 module.exports = Element;
-},{"vow":11}],7:[function(require,module,exports){
+},{"vow":12}],7:[function(require,module,exports){
 /*
 Page model. Handles all ajax calls to backend
 
@@ -504,7 +556,12 @@ var Page = {
 };
 
 module.exports = Page;
-},{"vow":11}],8:[function(require,module,exports){
+},{"vow":12}],8:[function(require,module,exports){
+module.exports=module.exports= {
+  "title": "Lorem ipsum",
+  "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
+}
+},{}],9:[function(require,module,exports){
 // var $ = require('jquery');
 var pageHandlers = require('../handlers/pageHandlers');
 var elementHandlers = require('../handlers/elementHandlers');
@@ -545,6 +602,7 @@ module.exports.renderElement = function(data) {
     element = $(handlebars.title(data));
     elementHandlers.changeContent(element.find('.element-title'), data._id);
   }
+  elementHandlers.resizeElement(element.find('.icon-resize-rotate'), data._id);
   elementHandlers.deleteElementHover(element.find('.icon-delete'));
   elementHandlers.deleteElement(element.find('.icon-delete'), data._id);
   elementHandlers.dragElement(element[0]);
@@ -555,8 +613,8 @@ module.exports.renderElement = function(data) {
 module.exports.renderPageContent = function(data) {
   var pageContent = $(handlebars.pageContent(data));
   return pageContent;
-}
-},{"../handlers/elementHandlers":4,"../handlers/pageHandlers":5}],9:[function(require,module,exports){
+};
+},{"../handlers/elementHandlers":4,"../handlers/pageHandlers":5}],10:[function(require,module,exports){
 var $ = require('jquery');
 var Page = require('../models/page');
 var Element = require('../models/element');
@@ -658,7 +716,7 @@ function elementRearrage() {
 
 
 
-},{"../components/dragdrop":3,"../handlers/pageHandlers":5,"../models/element":6,"../models/page":7,"../views/templates":8,"jquery":1}],10:[function(require,module,exports){
+},{"../components/dragdrop":3,"../handlers/pageHandlers":5,"../models/element":6,"../models/page":7,"../views/templates":9,"jquery":1}],11:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -746,7 +804,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 (function (process){
 /**
  * @module vow
@@ -2066,4 +2124,4 @@ defineAsGlobal && (global.vow = vow);
 })(this);
 
 }).call(this,require('_process'))
-},{"_process":10}]},{},[2]);
+},{"_process":11}]},{},[2]);

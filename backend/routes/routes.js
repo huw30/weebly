@@ -52,7 +52,7 @@ module.exports = function(app) {
 
   app.post('/element/new', function(req, res) {
     console.log(req.body);
-    var newElement = new Element(req.body.page, req.body.type, null, null);
+    var newElement = new Element(req.body.page, req.body.type, null, null, 'auto', 'auto');
     newElement.save().then(function(element) {
       res.send(element);
     }).fail(function(err) {
@@ -91,6 +91,17 @@ module.exports = function(app) {
     var elementId = req.params.id;
     var content = req.body.content;
     Element.updateContent(elementId, content).then(function() {
+      res.send({success: true});
+    }).fail(function(err) {
+      res.send(err);
+    });
+  });
+
+  app.post('/element/:id', function(req, res) {
+    var elementId = req.params.id;
+    var height = req.body.height;
+    var width = req.body.width;
+    Element.updateAspect(elementId, height, width).then(function() {
       res.send({success: true});
     }).fail(function(err) {
       res.send(err);

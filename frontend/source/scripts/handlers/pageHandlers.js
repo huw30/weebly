@@ -69,15 +69,9 @@ var pageHandlers = (function() {
         var self = this;
         Page.deletePage(id).then(function() {
           //then detach page button
-          var siblingPage = $(self).parent().prev()?$(self).parent().prev(): $(self).parent().next();
           $(self).parent().detach();
-          $('#'+id+'-t').detach();
           $('#'+id+'-c').detach();
-          //if there's another page, get that page's all elements 
-          if (siblingPage) {
-            getAllElements(siblingPage.attr('id'));
-          }
-          //if not, do nothing
+          $('#'+id+'-t').detach();
         }).fail(function(err) {
           console.log(err);
         });

@@ -11,11 +11,13 @@ var ObjectID = require('mongodb').ObjectID;
 var vow = require('vow');
 var settings = require('../../settings');
 
-function Element(page, type, position, content) {
+function Element(page, type, position, content, height, width) {
   this.page = page;
   this.type = type;
   this.position = position;
   this.content = content;
+  this.height = height;
+  this.width = width;
 }
 
 Element.prototype.save = function() {
@@ -25,7 +27,9 @@ Element.prototype.save = function() {
     page: this.page,
     type: this.type,
     position: this.position,
-    content: this.content
+    content: this.content,
+    height: this.height,
+    width: this.width
   }
   mongodb.connect(settings.url, function(err, db) {
     if (err) {
@@ -133,6 +137,39 @@ Element.updateContent = function(id, content) {
       }, {
         $set: {
           content: content
+        }
+      }, function(err) {
+        db.close();
+        if (err) {
+          deferred.reject(err);
+        }
+        deferred.resolve();
+      });
+    });
+  });
+  return deferred.promise();
+};
+
+Element.updateAspect = function(id, height, width) {
+  var deferred = vow.defer();
+  
+  var objectid = new ObjectID(id);
+  
+  mongodb.connect(settings.url, function(err, db) {
+    if (err) {
+      deferred.reject(err);
+    }
+    db.collection('elements',function(err, collection) {
+      if (err) {
+        db.close();
+        deferred.reject(err);
+      }
+      collection.update({
+        _id: objectid
+      }, {
+        $set: {
+          width: width,
+          height: height
         }
       }, function(err) {
         db.close();

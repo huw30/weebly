@@ -38,6 +38,7 @@ module.exports.renderElement = function(data) {
     element = $(handlebars.title(data));
     elementHandlers.changeContent(element.find('.element-title'), data._id);
   }
+  elementHandlers.resizeElement(element.find('.icon-resize-rotate'), data._id);
   elementHandlers.deleteElementHover(element.find('.icon-delete'));
   elementHandlers.deleteElement(element.find('.icon-delete'), data._id);
   elementHandlers.dragElement(element[0]);
@@ -48,4 +49,4 @@ module.exports.renderElement = function(data) {
 module.exports.renderPageContent = function(data) {
   var pageContent = $(handlebars.pageContent(data));
   return pageContent;
-}
+};

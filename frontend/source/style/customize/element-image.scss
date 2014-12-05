@@ -1,10 +1,21 @@
 .element-wrapper-image {
   position: relative;
   padding: 25px 22px 39px 22px;
+  min-height: 330px;
+  &.bordered {
+    border-radius: 7px;
+    border: 2px solid $anakiwa;
+    .element-image {
+      border: none;
+    }
+    span.icon-delete, span.icon-resize, span.icon-resize-rotate {
+      visibility: visible;
+    }
+  }
   .element-image {
     display: inline-block;
     width: 100%;
-    height: 285px;
+    height: 100%;
     padding: 72px;
     background-color: $athens-gray;
     border: 2px solid $heather;
@@ -59,6 +70,6 @@
     position: absolute;
     left: 50%;
     bottom: -23px;
-    cursor: move;
+    cursor: ns-resize;
   }
 }

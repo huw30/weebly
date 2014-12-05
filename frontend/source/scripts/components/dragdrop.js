@@ -56,9 +56,11 @@ var dragdrop = {
     } else if (parseInt(ypos) > parseInt($(event.target).height())/2){
       $(this).css('border', 'none');
       $(this).css('border-bottom', '2px dashed #6BBCFF');
+      $(this).css('width', '100%');      
     } else if(parseInt(ypos) < (parseInt($(event.target).height())/2)-1) {
       $(this).css('border', 'none');
       $(this).css('border-top', '2px dashed #6BBCFF');
+      $(this).css('width', '100%');
     }
     event.preventDefault();
     return false;

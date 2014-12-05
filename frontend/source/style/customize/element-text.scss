@@ -1,10 +1,19 @@
 .element-wrapper-text {
   position: relative;
   padding: 18px 22px;
+  min-height: 115px;
+  &.bordered {
+    border-radius: 7px;
+    border: 2px solid $anakiwa;
+    span.icon-delete, span.icon-resize, span.icon-resize-rotate {
+      visibility: visible;
+    }
+  }
   .element-text {
     display: inline-block;
     width: 100%;
-    min-height: 150px;
+    height: 100%;
+    overflow: scroll;
     font-family: 'ProximaNova-Reg', sans-serif;
     color: $dark-grey;
     font-size: 14px;
@@ -54,6 +63,6 @@
     position: absolute;
     left: 50%;
     bottom: -23px;
-    cursor: move;
+    cursor: ns-resize;
   }
 }

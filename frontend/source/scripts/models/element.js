@@ -41,6 +41,22 @@ var Element = {
     });
     return deferred.promise();
   },
+  updateAspect: function(id, payload) {
+    var deferred = vow.defer();
+    $.ajax({
+      type: "POST",
+      url: '/element/'+id,
+      contentType: "application/json",
+      data: payload,
+      success: function() {
+        deferred.resolve();
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        deferred.reject(errorThrown);
+      }
+    });
+    return deferred.promise();
+  },
   rearrange: function(array) {
     var deferred = vow.defer();
     var payload = {

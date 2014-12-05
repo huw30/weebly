@@ -1,10 +1,19 @@
 .element-wrapper-title {
   position: relative;
   padding: 18px 22px;
+  min-height: 75px;
+  text-overflow: scroll;
+  &.bordered {
+    border-radius: 7px;
+    border: 2px solid $anakiwa;
+    span.icon-delete, span.icon-resize, span.icon-resize-rotate {
+      visibility: visible;
+    }
+  }
   .element-title {
     display: inline-block;
     width: 100%;
-    min-height: 40px;
+    height: 100%;
     font-family: 'ProximaNova-Reg', sans-serif;
     color: $dark-grey;
     font-size: 30px;
@@ -37,6 +46,6 @@
     position: absolute;
     left: 50%;
     bottom: -23px;
-    cursor: move;
+    cursor: ns-resize;
   }
 }
