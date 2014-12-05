@@ -108,10 +108,10 @@ var dragdrop = {
         $('#'+id).insertBefore($(this));
       } else if (parseInt(ypos) > parseInt($(event.target).height())/2){
         //bottom
-        $('#'+id).insertAfter($(this));
+        $('#'+id).parent().insertAfter($(this).parent());
       } else if(parseInt(ypos) < (parseInt($(event.target).height())/2)-1) {
         //top
-        $('#'+id).insertBefore($(this));
+        $('#'+id).parent().insertBefore($(this).parent());
       }
       view.rearrange();
     } else {
