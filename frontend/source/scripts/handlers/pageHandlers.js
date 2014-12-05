@@ -127,6 +127,7 @@ function getAllElements(pageId) {
   Element.getAll(pageId).then(function(elements){
     var i = 0;
     while (i < elements.length) {
+      console.log(elements[i].width);
       if (elements[i].width == "" || elements[i].width == 100) {
         var container = templates.renderContainer();
         var el = templates.renderElement(elements[i]);
@@ -134,13 +135,15 @@ function getAllElements(pageId) {
         $('.page-content').append(container);
         i++;
       } else {
+        var sum = 0;
         var container = templates.renderContainer();
-        var el1 = templates.renderElement(elements[i]);
-        var el2 = templates.renderElement(elements[i+1]);
-        $(container).append(el1);
-        $(container).append(el2);
+        while (sum < 95) {
+          var el = templates.renderElement(elements[i]);
+          sum = sum + parseInt(elements[i].width);
+          container.append(el);
+          i++;
+        }
         $('.page-content').append(container);
-        i = i+2;
       }
     }
   }).fail(function(err) {

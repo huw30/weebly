@@ -61,14 +61,15 @@ var elementHandlers = {
       var self = this;
       Element.deleteElement(id).then(function() {
         //after the element is deleted in database, datach the DOM element
-        var sibling = $(self).parents('.element-divider-wrapper').siblings('.element-divider-wrapper');
-        if(sibling.length !== 0) {
-          var sid = sibling.attr('id');
-          var width = '100';
-          Element.updateWidth(sid, JSON.stringify({
-            width: width
-          })).then(function() {
-            sibling.css('width', '100%');
+        var rest = $(self).parents('.element-divider-wrapper').siblings('.element-divider-wrapper');
+        var siblings = rest.toArray();
+        if(siblings.length !== 0) {
+          var colNumber = parseInt(siblings.length);
+          width = Math.floor(100/colNumber);
+          siblings.forEach(function(sib) {
+            var id = $(sib).attr('id');
+            Element.updateWidth(id, JSON.stringify({width: width.toString()}));
+            $(sib).css('width', width+'%');
             $(self).parents('.element-divider-wrapper').detach();
           });
         } else {
