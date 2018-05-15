@@ -1,7 +1,7 @@
 weebly-project
 ==============
 
-####Timeline
+#### Timeline
 
 Day 1: Get familiar with this project. Read though requirements, F&Q and assets. Think about the architecture for this project, whether use Ember/Angular Frameworks. I was not clear about the requirements, so I send an email to Kate asking about whether keep front-end and backend separately or together as one project. Replied with one project scenario.
 
@@ -16,7 +16,7 @@ Day 5 - Day 10: Javascript front-end development. There were several times struc
 
 Day 11 - Day 13: Finished the backend data persistance. 
 
-####Installation
+#### Installation
 
 Clone this repo:
 
@@ -32,12 +32,12 @@ and then
 
 Finally, do `node server`
 
-####Front-End structure
+#### Front-End structure
 ![structure](https://github.com/huw30/weebly-project/blob/master/public/images/structure.png "Logo Title Text 1")
 
-####Server Specification
+#### Server Specification
 
-######Page
+###### Page
 
 `POST /page/new`
 
@@ -112,7 +112,7 @@ Response:
 
 ```
 
-######Elements
+###### Elements
 
 `POST /element/new`
 
